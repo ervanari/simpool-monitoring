@@ -4,58 +4,101 @@
 
 <div class="container-fluid py-4">
 	<div class="row">
-		<div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-			<div class="card">
-				<div class="card-header p-3 pt-2">
-					<div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-						<i class="material-icons opacity-10">smart_display</i>
+		<% for(let i in dataDashboard.devices) { %> 
+			<div class="col-xl-3 col-sm-6 mb-xl-0 mt-5">
+				<div class="card" style="background-color: #333338;">
+					<div class="card-header p-2 pt-2" style="background-color: #333338;">
+						<% if(dataDashboard.devices[i].isActive == true){ %>
+							<div class="icon icon-lg icon-shape bg-success shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+								<i class="material-icons opacity-10">done</i>
+							</div>
+						<% } else { %>
+							<div class="icon icon-lg icon-shape bg-danger shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+								<i class="material-icons opacity-10">close</i>
+							</div>
+						<% } %> 
+						
+						<div class="text-end pt-1">
+							<p class="text-sm mb-0 text-capitalize font-weight-bolder" style="color: white;"><%= dataDashboard.devices[i].simNumber%></p>
+						</div>
+
+						<% if(dataDashboard.devices[i].isBooked == true){ %>
+							<div class="d-flex justify-content-end">
+								<div class="pt-1 pr-2">
+									<i class="material-icons opacity-10">sync</i>
+								</div>
+								<div class="pt-1 pr-1">
+									<p class="text-sm mb-0 text-capitalize font-weight-bolder" style="color: white;">Booked</p>
+								</div>
+							</div>
+						<% } else { %>
+							<div class="d-flex justify-content-end">
+								<div class="pt-1 pr-2">
+									<i class="material-icons opacity-10">sync_disabled</i>
+								</div>
+								<div class="pt-1">
+									<p class="text-sm mb-0 text-capitalize font-weight-bolder" style="color: white;">Idle</p>
+								</div>
+							</div>
+							
+						<% } %> 
+						
+						<% for(let j in dataPulsa) { %> 
+							<% if(dataDashboard.devices[i].port == dataPulsa[j].deviceId[0].port){ %>
+								<% if(dataPulsa[j].pulsa == undefined){ %>
+									<div class="d-flex">
+										<div class="text-start pt-1">
+											IDR 0
+										</div>
+										<button class="btn btn-lg text-start pt-1 icon-update" onclick="modalShow('renew');changeRestart('<%= dataDashboard.devices[i].port %>')">
+											<i class="material-icons opacity-10">autorenew</i>
+										</button>
+									</div>
+								<% } else {%> 
+									<div class="d-flex">
+										<div class="text-start pt-1">
+											IDR <%= dataPulsa[j].pulsa%>
+										</div>
+										<button class="btn btn-lg text-start pt-1 icon-update" onclick="modalShow('renew');renew_pulsa('<%= dataDashboard.devices[i].port %>')">
+											<i class="material-icons opacity-10">autorenew</i>
+										</button>
+									</div>
+								<% } %> 
+							<% } %> 
+						<% } %> 
 					</div>
-					<div class="text-end pt-1">
-						<p class="text-sm mb-0 text-capitalize">Posted</p>
-						<h4 class="mb-0">2000</h4>
-					</div>
-				</div>
-				<hr class="dark horizontal my-0">
-				<div class="card-footer p-3">
-					<p class="mb-0"><span class="text-success text-sm font-weight-bolder">Total Video uploaded</p>
+
+					<% if(dataDashboard.devices[i].isActive == true){ %>
+						<div class="d-flex">
+							<div class="card-footer py-0 px-2">
+								<p class="mb-0"><span class="text-success text-sm font-weight-bolder"><%= dataDashboard.devices[i].port%></p>
+							</div>
+							<!-- <label class="switch my-auto mx-auto">
+								<input type="checkbox" checked>
+								<span class="slider round"></span>
+							</label> -->
+						</div>
+					<% } else { %>
+						<div class="d-flex">
+							<div class="card-footer py-0 px-2">
+								<p class="mb-0"><span class="text-danger text-sm font-weight-bolder"><%= dataDashboard.devices[i].port%></p>
+							</div>
+						</div>
+					<% } %> 
+
+					<button type="submit" class="btn btn-lg" onclick="modalShow('restart_sim');changeRestart('<%= dataDashboard.devices[i].isActive %>', '<%= dataDashboard.devices[i]._id %>', '<%= dataDashboard.devices[i].deviceKey %>')">
+						<span>
+							Restart
+						</span>
+					</button>
+					
 				</div>
 			</div>
-		</div>
-		<div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-			<div class="card">
-				<div class="card-header p-3 pt-2">
-					<div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-						<i class="material-icons opacity-10">category</i>
-					</div>
-					<div class="text-end pt-1">
-						<p class="text-sm mb-0 text-capitalize">category</p>
-						<h4 class="mb-0">2000</h4>
-					</div>
-				</div>
-				<hr class="dark horizontal my-0">
-				<div class="card-footer p-3">
-					<p class="mb-0"><span class="text-success text-sm font-weight-bolder">Total Category created</p>
-				</div>
-			</div>
-		</div>
-		<div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-			<div class="card">
-				<div class="card-header p-3 pt-2">
-					<div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-						<i class="material-icons opacity-10">person</i>
-					</div>
-					<div class="text-end pt-1">
-						<p class="text-sm mb-0 text-capitalize">user</p>
-						<h4 class="mb-0">2000</h4>
-					</div>
-				</div>
-				<hr class="dark horizontal my-0">
-				<div class="card-footer p-3">
-					<p class="mb-0"><span class="text-success text-sm font-weight-bolder">Total User</p>
-				</div>
-			</div>
-		</div>
+		<% } %> 
 	</div>
 </div>
 
 <%- include('../template/footer') -%>
+<%- include("../modals/general_modals/modal_restart") -%>
+<%- include("../modals/general_modals/modal_renew_pulsa") -%>
+
