@@ -18,8 +18,5 @@
     "http-errors": "~1.6.3",
     "moment": "^2.29.1",
     "morgan": "~1.9.1"
-  },
-  "devDependencies": {
-    "gulp-ejs": "^5.1.0"
   }
 }
