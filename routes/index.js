@@ -76,8 +76,6 @@ router.post('/renewpulsa', async function(req, res, next) {
 		const token = req.session.token
 		const dataRenew = await request.get("devices?limit=0&offset=0", token)
 
-		console.log("<<<==== dataRenew ====>>>", dataRenew.data.statusCode)
-
 		if(dataRenew){
 			res.render('modals/general_modals/modal_renew_pulsa', { 
 				title: 'Dashboard',
