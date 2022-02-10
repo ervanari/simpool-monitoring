@@ -40,58 +40,74 @@
 									<p class="text-sm mb-0 text-capitalize font-weight-bolder" style="color: white;">Idle</p>
 								</div>
 							</div>
-							
 						<% } %> 
 						
 						<% for(let j in dataPulsa) { %> 
-							<% if(dataDashboard.devices[i].port == dataPulsa[j].deviceId[0].port){ %>
+							<% if(dataDashboard.devices[i].port === dataPulsa[j].deviceData[0].port){ %>
 								<% if(dataPulsa[j].pulsa == undefined){ %>
-									<div class="d-flex">
-										<div class="text-start pt-1">
+									<div class="d-flex justify-content-center">
+										<div class="text-center pt-1 small">
 											IDR 0
 										</div>
-										<button class="btn btn-lg text-start pt-1 icon-update" onclick="modalShow('renew');changeRestart('<%= dataDashboard.devices[i].port %>')">
-											<i class="material-icons opacity-10">autorenew</i>
-										</button>
 									</div>
 								<% } else {%> 
-									<div class="d-flex">
-										<div class="text-start pt-1">
+									<div class="d-flex justify-content-center">
+										<div class="text-center pt-1 small">
 											IDR <%= dataPulsa[j].pulsa%>
 										</div>
-										<button class="btn btn-lg text-start pt-1 icon-update" onclick="modalShow('renew');renew_pulsa('<%= dataDashboard.devices[i].port %>')">
-											<i class="material-icons opacity-10">autorenew</i>
-										</button>
 									</div>
 								<% } %> 
 							<% } %> 
 						<% } %> 
+
+						<div class="d-flex justify-content-around">
+							<div class="pt-1 small">
+								IN 
+							</div>
+							<div class="pt-1 small">
+								OUT 
+							</div>
+						</div>
+						<% for(let m in dataMutation) {%> 
+							<% if(dataDashboard.devices[i].simNumber == dataMutation[m].number){ %>
+								<div class="row">
+									<div class="pt-1 col-6 text-center small">
+										IDR <%= dataMutation[m].in %> 
+									</div>
+									<div class="pt-1 col-6 text-center small">
+										IDR <%= dataMutation[m].out %> 
+									</div>
+								</div>
+							<% } %> 
+						<% } %> 
 					</div>
 
-					<% if(dataDashboard.devices[i].isActive == true){ %>
-						<div class="d-flex">
-							<div class="card-footer py-0 px-2">
-								<p class="mb-0"><span class="text-success text-sm font-weight-bolder"><%= dataDashboard.devices[i].port%></p>
+					<div class="d-flex">
+						<% if(dataDashboard.devices[i].isActive == true){ %>
+							<div class="card-footer pt-1 px-2">
+								<p class="mb-0"><span class="text-success text-sm font-weight-bolder"><%= dataDashboard.devices[i].port %></p>
 							</div>
-							<!-- <label class="switch my-auto mx-auto">
-								<input type="checkbox" checked>
-								<span class="slider round"></span>
-							</label> -->
-						</div>
-					<% } else { %>
-						<div class="d-flex">
-							<div class="card-footer py-0 px-2">
+						<% } else { %>
+							<div class="card-footer pt-1 px-2">
 								<p class="mb-0"><span class="text-danger text-sm font-weight-bolder"><%= dataDashboard.devices[i].port%></p>
 							</div>
-						</div>
-					<% } %> 
+						<% } %> 
+						<button class="btn btn-lg text-start pt-1 icon-update" onclick="modalShow('renew');renew_pulsa('<%= JSON.stringify(dataDashboard.devices[i].dial_message) %>')">
+							<i class="material-icons opacity-10">perm_phone_msg</i>
+						</button>
+					</div>
 
 					<button type="submit" class="btn btn-lg" onclick="modalShow('restart_sim');changeRestart('<%= dataDashboard.devices[i].isActive %>', '<%= dataDashboard.devices[i]._id %>', '<%= dataDashboard.devices[i].deviceKey %>')">
-						<span>
-							Restart
-						</span>
+						<% if(dataDashboard.devices[i].isActive == true){ %>
+							<span>
+								Turn Off
+							</span>
+						<% } else { %>
+							<span>
+								Turn On
+							</span>
+						<% } %> 
 					</button>
-					
 				</div>
 			</div>
 		<% } %> 
@@ -101,4 +117,5 @@
 <%- include('../template/footer') -%>
 <%- include("../modals/general_modals/modal_restart") -%>
 <%- include("../modals/general_modals/modal_renew_pulsa") -%>
+
 

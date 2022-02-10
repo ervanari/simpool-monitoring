@@ -16,14 +16,16 @@ router.get('/dashboard', async function(req, res, next) {
 		const token = req.session.token
 		const dashboardData = await request.get("devices?limit=0&offset=0", token)
 		const getPulsa = await request.get("providers/all", token)
-		console.log("<<<==== getPulsa ====>>>", getPulsa.data.data)
+		const getMutation = await request.get("mutation", token)
+		// console.log("<<<==== dashboardData ====>>>", dashboardData.data)
 		
 		if(dashboardData){
 			res.render('pages/dashboard', { 
 				title: 'Dashboard',
 				user : req.session.user,
 				dataDashboard: dashboardData.data.data,
-				dataPulsa: getPulsa.data.data
+				dataPulsa: getPulsa.data.data,
+				dataMutation: getMutation.data.data
 			});
 		} else {
 			res.redirect("/auth/logout")
@@ -56,7 +58,6 @@ router.post('/update', async function(req, res, next) {
 
 		for(let i in resDevice){
 			if(resDevice[i].deviceKey === req.body.key){
-
 				const dataKey = await request.put("devices/update-status", token, dataStatus)
 				if(dataKey.status === 200){
 					res.redirect("/dashboard")
@@ -72,21 +73,17 @@ router.post('/update', async function(req, res, next) {
 
 router.post('/renewpulsa', async function(req, res, next) {
     try {
-
-		// let sendData = {
-		// 	port: req.body.port,
-		// 	type: "single"
-		// }
-		console.log("<<<==== req.body ====>>>", req.body)
 		const token = req.session.token
-		const dataRenew = await request.post("providers/requestBalance", token, req.body)
-		console.log("<<<==== dataRenew ====>>>", dataRenew)
-		
-		// if(dataKey.status === 200){
-		// 	res.redirect("/dashboard")
-		// } else {
-		// 	res.redirect("/post")
-		// }
+		const dataRenew = await request.get("devices?limit=0&offset=0", token)
+
+		console.log("<<<==== dataRenew ====>>>", dataRenew.data.statusCode)
+
+		if(dataRenew){
+			res.render('modals/general_modals/modal_renew_pulsa', { 
+				title: 'Dashboard',
+				dataDial: dashboardData.data.data,
+			});
+		}
 	} catch {
 		res.redirect("/dashboard")
 	}
