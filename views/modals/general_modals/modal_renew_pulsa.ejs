@@ -1,19 +1,13 @@
 <div class="modal fade" id="renew" tabindex="-1" aria-labelledby="renew" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="/renewpulsa" method="post">
+			<form method="post">
 				<div class="modal-header">
 					<h5 class="modal-title" id="newKeyModals">Cek Pulsa</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-                <div class="modal-body justify-content-center p-4 d-none">
-                    <input type="text" name="port" placeholder="_id" id="port" class="w-100 p-2 rounded border" required>
-                </div>
-                <div class="modal-body justify-content-center p-4 d-none">
-                    <input type="text" name="type" placeholder="type" id="type" class="w-100 p-2 rounded border" required>
-                </div>
-                <div class="modal-body justify-content-center p-4">
-                    Estimasi waktu 10 detik, Harap Menunggu ...!
+                <div class="modal-body justify-content-center p-4" id="dataUSSD">
+                    <!-- Estimasi waktu 10 detik, Harap Menunggu ...! -->
                 </div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
