@@ -108,12 +108,17 @@ router.post('/update', async function(req, res, next) {
 
 		for(let i in resDevice){
 			if(resDevice[i].deviceKey === req.body.key){
-				const dataKey = await request.put("devices/update-status", token, dataStatus)
-				if(dataKey.status === 200){
-					res.redirect("/dashboard")
-				} else {
-					res.redirect("/post")
+				try {
+					const dataKey = await request.put("devices/update-status", token, dataStatus)
+					if(dataKey.status === 200){
+						res.redirect("/dashboard")
+					} else {
+						res.redirect("/")
+					}
+				} catch (err){
+					console.log(err);
 				}
+				
 			}
 		}
 	} catch {
