@@ -1,9 +1,3 @@
-// const axios = require('axios');
-// var socket = io('http://116.0.1.66:3017')
-// socket.on('connect', function() {
-//     console.info('Socket connect');
-// });
-
 const copyText = ( value ) => {
     navigator.clipboard.writeText(value);
 }
@@ -28,8 +22,11 @@ const changeRestart = (status, id, key) => {
 
 }
 
-const renew_pulsa = (dial) => {
-    const ussd = document.getElementById("dataUSSD")
+const renew_pulsa = (port) => {
+    let mode = document.getElementById("mode")
+    let ports = document.getElementById("ports")
 
-    ussd.innerHTML = dial
+    mode.value = "single"
+    ports.innerHTML = port
 }
+

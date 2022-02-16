@@ -17,19 +17,69 @@ router.get('/dashboard', async function(req, res, next) {
 		const dashboardData = await request.get("devices?limit=0&offset=0", token)
 		const getPulsa = await request.get("providers/all", token)
 		const getMutation = await request.get("mutation", token)
-		// console.log("<<<==== dashboardData ====>>>", dashboardData.data)
-		
+		let sendData = dashboardData.data.data.devices
+		let coundDeveice = dashboardData.data.data.devices
+		let sendDataExp = {}
+		const allData = []
+
+		let portActive = coundDeveice.filter(val => {
+			return val.isActive == true
+		})
+		let portOff = coundDeveice.filter(val => {
+			return val.isActive == false
+		})
+		let portBooked = coundDeveice.filter(val => {
+			return val.isBooked == true
+		})
+		let portIdle = coundDeveice.filter(val => {
+			return val.isBooked == false
+		})
+		let portTimeout = coundDeveice.filter(val => {
+			return val.simNumber == undefined
+		})
+		let portSuccess = getPulsa.data.data.filter(val => {
+			return val.number
+		})
+		sendData.sort(function (a, b) {
+			return a.port.localeCompare(b.port);
+		});
+
+		coundDeveice.forEach((val,idx) => {
+			if(val.dial_message){
+				sendDataExp = val.dial_message.match(/\d{2}([\/.-])\d{2}\1\d{4}/g)
+			}else{
+				sendDataExp = "Unconnected"
+			}
+			allData.push({
+				isActive: val.isActive,
+				simNumber: val.simNumber,
+				isBooked: val.isBooked,
+				port: val.port,
+				dial_message: val.dial_message,
+				deviceKey: val.deviceKey,
+				simExp: sendDataExp
+			})
+		})
+		// console.log("<<<==== coundDeveice ====>>>",allData);
+
 		if(dashboardData){
 			res.render('pages/dashboard', { 
 				title: 'Dashboard',
 				user : req.session.user,
-				dataDashboard: dashboardData.data.data,
+				dataDashboard: allData,
 				dataPulsa: getPulsa.data.data,
-				dataMutation: getMutation.data.data
+				dataMutation: getMutation.data.data,
+				active: portActive.length,
+				off: portOff.length,
+				booked: portBooked.length,
+				idle: portIdle.length,
+				// expired: portExpired,
+				timeout: portTimeout.length
 			});
 		} else {
 			res.redirect("/auth/logout")
 		}
+		
 	} catch {
 		res.redirect("/auth/logout")
 	}
@@ -74,13 +124,14 @@ router.post('/update', async function(req, res, next) {
 router.post('/renewpulsa', async function(req, res, next) {
     try {
 		const token = req.session.token
-		const dataRenew = await request.get("devices?limit=0&offset=0", token)
-
-		if(dataRenew){
-			res.render('modals/general_modals/modal_renew_pulsa', { 
-				title: 'Dashboard',
-				dataDial: dashboardData.data.data,
-			});
+		const dataRenew = await request.post("devices/ussdDial", token, req.body)
+		
+		if(dataRenew.data.statusCode === 200){
+			const dashboarRenew = await request.get("devices?limit=0&offset=0", token)
+			// console.log("<<<==== dataRenew ====>>>", dashboarRenew)
+			if(dashboarRenew.data.statusCode === 200){
+				res.redirect("/dashboard")
+			}
 		}
 	} catch {
 		res.redirect("/dashboard")
