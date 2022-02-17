@@ -118,7 +118,6 @@ router.post('/update', async function(req, res, next) {
 				} catch (err){
 					console.log(err);
 				}
-				
 			}
 		}
 	} catch {
@@ -132,10 +131,13 @@ router.post('/renewpulsa', async function(req, res, next) {
 		const dataRenew = await request.post("devices/ussdDial", token, req.body)
 		
 		if(dataRenew.data.statusCode === 200){
-			const dashboarRenew = await request.get("devices?limit=0&offset=0", token)
-			// console.log("<<<==== dataRenew ====>>>", dashboarRenew)
-			if(dashboarRenew.data.statusCode === 200){
-				res.redirect("/dashboard")
+			try {
+				const dashboarRenew = await request.get("devices?limit=0&offset=0", token)
+				if(dashboarRenew.data.statusCode === 200){
+					res.redirect("/dashboard")
+				}
+			} catch (error) {
+				console.log(error)
 			}
 		}
 	} catch {
