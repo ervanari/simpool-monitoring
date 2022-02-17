@@ -51,11 +51,11 @@ app.use(function(err, req, res, next) {
 
 	// render the error page
 	res.status(err.status || 500);
-	res.render('pages/error', {
-		title : err.status,
-		errorCode : err.status,
-		errorMessage : err.message
-	});
+	// res.render('pages/error', {
+	// 	title : err.status,
+	// 	errorCode : err.status,
+	// 	errorMessage : err.message
+	// });
 });
 
 module.exports = app;
