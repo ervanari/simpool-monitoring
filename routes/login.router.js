@@ -12,14 +12,18 @@ router.post('/postLogin', async function(req, res, next) {
 		
 		// console.log("<<<==== statusCode2 ====>>>",dataLogin)
 		if(dataLogin.data.statusCode == 200){
-			req.session.token = dataLogin.data.data
-			const dataUser = await request.get("admin/profile", dataLogin.data.data)
-			req.session.user = {
-				name: dataUser.data.data.email,
-				role: dataUser.data.data.role,
-				id: dataUser.data.data.id
+			try {
+				req.session.token = dataLogin.data.data
+				const dataUser = await request.get("admin/profile", dataLogin.data.data)
+				req.session.user = {
+					name: dataUser.data.data.email,
+					role: dataUser.data.data.role,
+					id: dataUser.data.data.id
+				}
+				res.redirect("/dashboard")
+			} catch {
+				res.redirect("/")
 			}
-			res.redirect("/dashboard")
 		} else {
 			req.session.loginMessage = "failed"
 			res.redirect("/")

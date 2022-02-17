@@ -155,7 +155,7 @@
 					<div class="text-end mt-n3">
 						<p class="text-center text-sm mb-0 text-capitalize font-weight-bolder" style="color: white;"> <%= dataDashboard[i].simExp %>  </p>
 					</div>
-
+					<% dataDashboard[i]._id %> 
 					<button type="submit" class="btn btn-lg" onclick="modalShow('restart_sim');changeRestart('<%= dataDashboard[i].isActive %>', '<%= dataDashboard[i]._id %>', '<%= dataDashboard[i].deviceKey %>')">
 						<% if(dataDashboard[i].isActive == true){ %>
 							<span>
