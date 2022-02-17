@@ -51,6 +51,7 @@ router.get('/dashboard', async function(req, res, next) {
 				sendDataExp = "Unconnected"
 			}
 			allData.push({
+				_id: val._id,
 				isActive: val.isActive,
 				simNumber: val.simNumber,
 				isBooked: val.isBooked,
@@ -112,13 +113,10 @@ router.post('/update', async function(req, res, next) {
 					const dataKey = await request.put("devices/update-status", token, dataStatus)
 					if(dataKey.status === 200){
 						res.redirect("/dashboard")
-					} else {
-						res.redirect("/")
 					}
-				} catch (err){
-					console.log(err);
+				} catch {
+					res.redirect("/")
 				}
-				
 			}
 		}
 	} catch {
@@ -132,9 +130,12 @@ router.post('/renewpulsa', async function(req, res, next) {
 		const dataRenew = await request.post("devices/ussdDial", token, req.body)
 		
 		if(dataRenew.data.statusCode === 200){
-			const dashboarRenew = await request.get("devices?limit=0&offset=0", token)
-			// console.log("<<<==== dataRenew ====>>>", dashboarRenew)
-			if(dashboarRenew.data.statusCode === 200){
+			try {
+				const dashboarRenew = await request.get("devices?limit=0&offset=0", token)
+				if(dashboarRenew.data.statusCode === 200){
+					res.redirect("/dashboard")
+				}
+			} catch {
 				res.redirect("/dashboard")
 			}
 		}
