@@ -2,6 +2,7 @@
 <%- include("../template/navside") -%>
 <%- include("../template/navbars") -%>
 
+
 <div class="container-fluid pt-3 pb-0 px-4">
 	<div class="row">
 		<div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
@@ -57,6 +58,20 @@
 				</div>
 			</div>
 		</div>
+		<div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+			<div class="card">
+				<div class="p-3 pt-2">
+					<div class="text-end pt-1">
+						<form class="form-inline">
+							<p class="text-start text-sm mb-0 text-capitalize text-success font-weight-bolder">Search
+							</p>
+							<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+								onkeydown="onSearch(event, '<%= dataDashboard %>')">
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -90,7 +105,8 @@
 							<i class="material-icons opacity-10">sync</i>
 						</div>
 						<div class="pt-1 pr-1">
-							<p class="text-sm mb-0 text-capitalize font-weight-bolder" style="color: white;">Booked</p>
+							<p class="text-sm mb-0 text-capitalize font-weight-bolder" id="bookeds"
+								style="color: white;">Booked</p>
 						</div>
 					</div>
 					<% } else { %>
@@ -99,7 +115,8 @@
 							<i class="material-icons opacity-10">sync_disabled</i>
 						</div>
 						<div class="pt-1">
-							<p class="text-sm mb-0 text-capitalize font-weight-bolder" style="color: white;">Idle</p>
+							<p class="text-sm mb-0 text-capitalize font-weight-bolder" id="bookeds"
+								style="color: white;">Idle</p>
 						</div>
 					</div>
 					<% } %>
@@ -114,7 +131,7 @@
 					</div>
 					<% } else {%>
 					<div class="d-flex justify-content-center">
-						<div class="text-center pt-1 small">
+						<div class="text-center pt-1 small" id="pulsa_data">
 							IDR <%= dataPulsa[j].pulsa%>
 						</div>
 					</div>
@@ -185,7 +202,28 @@
 </div>
 
 <script>
-
+	var socket = io('https://qz-pulsa.intama.online')
+	socket.on('connect', function () {
+		console.info('Socket connect');
+	});
+	socket.on('payment_completed::0f289dc7-c77a-48bc-abbc-82b389909c73', function (data) {
+		console.log(data)
+		// if (data != "") {
+		// 	window.location.href = "/dashboard"
+		// }
+	});
+	socket.on('pulsa_in::0f289dc7-c77a-48bc-abbc-82b389909c73', function (data) {
+		console.log(data)
+		// if (data != "") {
+		// 	window.location.href = "/dashboard"
+		// }
+	});
+	socket.on('device_update::0f289dc7-c77a-48bc-abbc-82b389909c73', function (data) {
+		console.log(data)
+		// if (data != "") {
+		// 	window.location.href = "/dashboard"
+		// }
+	});
 </script>
 <%- include('../template/footer') -%>
 <%- include("../modals/general_modals/modal_restart") -%>
