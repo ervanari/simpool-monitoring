@@ -163,4 +163,27 @@ router.post("/renewpulsa", async function (req, res, next) {
   }
 });
 
+router.post("/search_data", async function (req, res, next) {
+  try {
+    const token = req.session.token;
+    const dataRenew = await request.post("devices/ussdDial", token, req.body);
+    console.log("#################################", req.body);
+    // if (dataRenew.data.statusCode === 200) {
+    //   try {
+    //     const dashboarRenew = await request.get(
+    //       "devices?limit=0&offset=0",
+    //       token
+    //     );
+    //     if (dashboarRenew.data.statusCode === 200) {
+    //       res.redirect("/dashboard");
+    //     }
+    //   } catch (err) {
+    //     alert(err);
+    //   }
+    // }
+  } catch {
+    res.redirect("/dashboard");
+  }
+});
+
 module.exports = router;

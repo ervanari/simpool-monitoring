@@ -34,28 +34,24 @@ const renew_pulsa = (port) => {
 };
 
 var codesEl;
-const onSearch = (e, data) => {
-  //   console.log(e, data);
-  for (let i = 0; i < data.length; i++) {
-    console.log(data[i].simNumber, data[i].port);
-    // codesEl.innerText += `\n${data[i].simNumber} code: ${data[i].port}`;
-  }
+const onSearch = (e) => {
+  // console.log(e);
+  let elData = document.getElementById("elSearch");
+  elData.value;
 };
 
-function search(ev) {
-  //   console.log(ev);
-  var key = ev.target.value;
-  codesEl.innerText = null;
+// function search(ev) {
+//   var key = ev.target.value;
+//   codesEl.innerText = null;
+//   onSearch(
+//     jsonData.filter((data) => {
+//       var regex = new RegExp(key, "i");
+//       return data.name.match(regex) || data.code.match(regex);
+//     })
+//   );
+// }
 
-  onSearch(
-    jsonData.filter((data) => {
-      var regex = new RegExp(key, "i");
-      return data.name.match(regex) || data.code.match(regex);
-    })
-  );
-}
-
-window.onload = function () {
-  codesEl = document.getElementById("codes");
-  onSearch(jsonData);
-};
+// window.onload = function () {
+//   codesEl = document.getElementById("codes");
+//   onSearch(jsonData);
+// };
