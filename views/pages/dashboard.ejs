@@ -58,20 +58,20 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+		<!-- <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
 			<div class="card">
 				<div class="p-3 pt-2">
 					<div class="text-end pt-1">
-						<form class="form-inline">
+						<form action="/search_data" class="form-inline">
 							<p class="text-start text-sm mb-0 text-capitalize text-success font-weight-bolder">Search
 							</p>
-							<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
-								onkeydown="onSearch(event, '<%= dataDashboard %>')">
+							<input class="form-control mr-sm-2" id="elSearch" type="search" placeholder="Search"
+								aria-label="Search" onclick="onSearch(event)">
 						</form>
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </div>
 
@@ -207,22 +207,22 @@
 		console.info('Socket connect');
 	});
 	socket.on('payment_completed::0f289dc7-c77a-48bc-abbc-82b389909c73', function (data) {
-		console.log(data)
-		// if (data != "") {
-		// 	window.location.href = "/dashboard"
-		// }
+		// console.log("payment_completed", data)
+		if (data != "") {
+			window.location.href = "/dashboard"
+		}
 	});
 	socket.on('pulsa_in::0f289dc7-c77a-48bc-abbc-82b389909c73', function (data) {
-		console.log(data)
-		// if (data != "") {
-		// 	window.location.href = "/dashboard"
-		// }
+		// console.log("pulsa_in", data)
+		if (data != "") {
+			window.location.href = "/dashboard"
+		}
 	});
 	socket.on('device_update::0f289dc7-c77a-48bc-abbc-82b389909c73', function (data) {
-		console.log(data)
-		// if (data != "") {
-		// 	window.location.href = "/dashboard"
-		// }
+		// console.log("device_update", data)
+		if (data != "") {
+			window.location.href = "/dashboard"
+		}
 	});
 </script>
 <%- include('../template/footer') -%>
