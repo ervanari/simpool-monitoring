@@ -146,18 +146,22 @@ router.post("/renewpulsa", async function (req, res, next) {
     const dataRenew = await request.post("devices/ussdDial", token, req.body);
 
     if (dataRenew.data.statusCode === 200) {
-      try {
-        const dashboarRenew = await request.get(
-          "devices?limit=0&offset=0",
-          token
-        );
-        if (dashboarRenew.data.statusCode === 200) {
-          res.redirect("/dashboard");
-        }
-      } catch (err) {
-        alert(err);
-      }
+      res.redirect("/dashboard");
     }
+  } catch {
+    res.redirect("/dashboard");
+  }
+});
+
+router.post("/requestpulsa", async function (req, res, next) {
+  try {
+    const token = req.session.token;
+    const reqpulsa = await request.post(
+      "providers/requestBalance",
+      token,
+      req.body
+    );
+    // console.log(reqpulsa);
   } catch {
     res.redirect("/dashboard");
   }
@@ -166,22 +170,86 @@ router.post("/renewpulsa", async function (req, res, next) {
 router.post("/search_data", async function (req, res, next) {
   try {
     const token = req.session.token;
-    const dataRenew = await request.post("devices/ussdDial", token, req.body);
-    console.log("#################################", req.body);
-    // if (dataRenew.data.statusCode === 200) {
-    //   try {
-    //     const dashboarRenew = await request.get(
-    //       "devices?limit=0&offset=0",
-    //       token
-    //     );
-    //     if (dashboarRenew.data.statusCode === 200) {
-    //       res.redirect("/dashboard");
-    //     }
-    //   } catch (err) {
-    //     alert(err);
-    //   }
-    // }
+    const dashboardData = await request.get("devices?limit=0&offset=0", token);
+    const getPulsa = await request.get("providers/all", token);
+    const getMutation = await request.get("mutation", token);
+    let sendData = dashboardData.data.data.devices;
+    let finds = dashboardData.data.data.devices;
+    let coundDeveice = dashboardData.data.data.devices;
+    let sendDataExp = {};
+    const allData = [];
+
+    let portActive = coundDeveice.filter((val) => {
+      return val.isActive == true;
+    });
+    let portOff = coundDeveice.filter((val) => {
+      return val.isActive == false;
+    });
+    let portBooked = coundDeveice.filter((val) => {
+      return val.isBooked == true;
+    });
+    let portIdle = coundDeveice.filter((val) => {
+      return val.isBooked == false;
+    });
+    let portTimeout = coundDeveice.filter((val) => {
+      return val.simNumber == undefined;
+    });
+    let portSuccess = getPulsa.data.data.filter((val) => {
+      return val.number;
+    });
+    sendData.sort(function (a, b) {
+      return a.port.localeCompare(b.port);
+    });
+
+    coundDeveice.forEach((val, idx) => {
+      if (val.dial_message) {
+        if (val.dial_message.match(/\d{2}([\/.-])\d{2}\1\d{4}/g) != null) {
+          sendDataExp = val.dial_message.match(/\d{2}([\/.-])\d{2}\1\d{4}/g);
+        } else {
+          sendDataExp = "Unconnected";
+        }
+      } else {
+        sendDataExp = "Unconnected";
+      }
+      //   console.log("<<<==== coundDeveice ====>>>", sendDataExp);
+
+      allData.push({
+        _id: val._id,
+        isActive: val.isActive,
+        simNumber: val.simNumber,
+        isBooked: val.isBooked,
+        port: val.port,
+        dial_message: val.dial_message,
+        deviceKey: val.deviceKey,
+        simExp: sendDataExp,
+      });
+    });
+
+    let newList = [];
+    for (let i in finds) {
+      let dataNumber = String(finds[i].simNumber).includes(req.body.elSearch);
+      let dataPort = String(finds[i].port).includes(req.body.elSearch);
+      if (dataNumber == true || dataPort == true) {
+        newList.push(finds[i]);
+      }
+    }
+
+    if (dashboardData) {
+      res.render("pages/dashboard", {
+        title: "Dashboard",
+        user: req.session.user,
+        dataDashboard: newList,
+        dataPulsa: getPulsa.data.data,
+        dataMutation: getMutation.data.data,
+        active: portActive.length,
+        off: portOff.length,
+        booked: portBooked.length,
+        idle: portIdle.length,
+        timeout: portTimeout.length,
+      });
+    }
   } catch {
+    // console.log(err);
     res.redirect("/dashboard");
   }
 });

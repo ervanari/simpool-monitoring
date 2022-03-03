@@ -27,31 +27,75 @@ const changeRestart = (status, id, key) => {
 
 const renew_pulsa = (port) => {
   let mode = document.getElementById("mode");
-  let ports = document.getElementById("ports");
+  let ports = document.getElementById("port");
 
   mode.value = "single";
-  ports.innerHTML = port;
+  ports.value = port;
 };
 
-var codesEl;
 const onSearch = (e) => {
-  // console.log(e);
+  // console.log(e.target.value);
   let elData = document.getElementById("elSearch");
-  elData.value;
+  elData.value = e.target.value;
 };
 
-// function search(ev) {
-//   var key = ev.target.value;
-//   codesEl.innerText = null;
-//   onSearch(
-//     jsonData.filter((data) => {
-//       var regex = new RegExp(key, "i");
-//       return data.name.match(regex) || data.code.match(regex);
-//     })
-//   );
-// }
+const cek_pulsa = (port) => {
+  localStorage.setItem("port", port);
+  let socket = io("https://qz-pulsa.intama.online");
 
-// window.onload = function () {
-//   codesEl = document.getElementById("codes");
-//   onSearch(jsonData);
-// };
+  let type = document.getElementById("type");
+  let ports = document.getElementById("port_pulsa");
+  type != null ? (type.value = "single") : (type.value = "");
+  ports.innerHTML = port;
+
+  if (port != undefined) {
+    socket.on("receive_balance_" + port, function (data) {
+      // console.log("receive_balance_", data);
+      if (data != "") {
+        window.location.href = "/dashboard";
+      }
+    });
+  }
+};
+
+window.addEventListener("DOMContentLoaded", (event) => {
+  var socket = io("https://qz-pulsa.intama.online");
+  socket.on("connect", function () {
+    console.info("Socket connect");
+  });
+  socket.on(
+    "payment_completed::0f289dc7-c77a-48bc-abbc-82b389909c73",
+    function (data) {
+      // console.log("payment_completed", data)
+      if (data != "") {
+        window.location.href = "/dashboard";
+      }
+    }
+  );
+  socket.on("pulsa_in::0f289dc7-c77a-48bc-abbc-82b389909c73", function (data) {
+    // console.log("pulsa_in", data)
+    if (data != "") {
+      window.location.href = "/dashboard";
+    }
+  });
+  socket.on(
+    "device_update::0f289dc7-c77a-48bc-abbc-82b389909c73",
+    function (data) {
+      // console.log("device_update", data)
+      if (data != "") {
+        window.location.href = "/dashboard";
+      }
+    }
+  );
+  socket.on(
+    "ussd_dial_message::0f289dc7-c77a-48bc-abbc-82b389909c73",
+    function (data) {
+      // console.log("ussd_dial_message", data)
+      if (data != "") {
+        window.location.href = "/dashboard";
+      }
+    }
+  );
+
+  cek_pulsa();
+});

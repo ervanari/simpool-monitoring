@@ -58,20 +58,22 @@
 				</div>
 			</div>
 		</div>
-		<!-- <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+		<div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
 			<div class="card">
 				<div class="p-3 pt-2">
 					<div class="text-end pt-1">
-						<form action="/search_data" class="form-inline">
+						<form action="/search_data" method="post" class="form-inline">
 							<p class="text-start text-sm mb-0 text-capitalize text-success font-weight-bolder">Search
+								Number
 							</p>
-							<input class="form-control mr-sm-2" id="elSearch" type="search" placeholder="Search"
-								aria-label="Search" onclick="onSearch(event)">
+							<input class="form-control mr-sm-2 small w-80" id="elSearch" name="elSearch" type="search"
+								placeholder="Search" aria-label="Search" onkeyup="onSearch(event)">
+							<button type="submit" class="btn btn-primary d-none"></button>
 						</form>
 					</div>
 				</div>
 			</div>
-		</div> -->
+		</div>
 	</div>
 </div>
 
@@ -128,12 +130,20 @@
 						<div class="text-center pt-1 small">
 							IDR 0
 						</div>
+						<button class="btn btn-lg text-start pt-1 icon-update"
+							onclick="modalShow('request_pulsa');cek_pulsa('<%= dataDashboard[i].port %>')">
+							<i class="material-icons opacity-10">perm_phone_msg</i>
+						</button>
 					</div>
 					<% } else {%>
 					<div class="d-flex justify-content-center">
 						<div class="text-center pt-1 small" id="pulsa_data">
 							IDR <%= dataPulsa[j].pulsa%>
 						</div>
+						<button class="btn btn-lg text-start pt-1 icon-update"
+							onclick="modalShow('request_pulsa');cek_pulsa('<%= dataDashboard[i].port %>')">
+							<i class="material-icons opacity-10">perm_phone_msg</i>
+						</button>
 					</div>
 					<% } %>
 					<% } %>
@@ -174,10 +184,12 @@
 					</div>
 					<% } %>
 					<button class="btn btn-lg text-start pt-1 icon-update"
-						onclick="modalShow('renew');renew_pulsa('<%= dataDashboard[i].port %>')">
+						onclick="modalShow('req_expdate');renew_pulsa('<%= dataDashboard[i].port %>')">
 						<i class="material-icons opacity-10">perm_phone_msg</i>
 					</button>
+
 				</div>
+
 				<div class="text-end mt-n3">
 					<p class="text-center text-sm mb-0 text-capitalize font-weight-bolder" style="color: white;">
 						<%= dataDashboard[i].simExp %> </p>
@@ -201,30 +213,6 @@
 	</div>
 </div>
 
-<script>
-	var socket = io('https://qz-pulsa.intama.online')
-	socket.on('connect', function () {
-		console.info('Socket connect');
-	});
-	socket.on('payment_completed::0f289dc7-c77a-48bc-abbc-82b389909c73', function (data) {
-		// console.log("payment_completed", data)
-		if (data != "") {
-			window.location.href = "/dashboard"
-		}
-	});
-	socket.on('pulsa_in::0f289dc7-c77a-48bc-abbc-82b389909c73', function (data) {
-		// console.log("pulsa_in", data)
-		if (data != "") {
-			window.location.href = "/dashboard"
-		}
-	});
-	socket.on('device_update::0f289dc7-c77a-48bc-abbc-82b389909c73', function (data) {
-		// console.log("device_update", data)
-		if (data != "") {
-			window.location.href = "/dashboard"
-		}
-	});
-</script>
 <%- include('../template/footer') -%>
 <%- include("../modals/general_modals/modal_restart") -%>
 <%- include("../modals/general_modals/modal_renew_pulsa") -%>
