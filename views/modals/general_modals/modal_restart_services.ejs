@@ -1,0 +1,28 @@
+<div class="modal fade" id="restart_services" tabindex="-1" aria-labelledby="restart_services" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/control_service" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newKeyModals">Restart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body justify-content-center p-4">
+                    <div>Choice Action.</div>
+                    <div class="form-group">
+                        <select class="form-control" id="run" name="run">
+                            <option value="0">-- Select --</option>
+                            <option value="start">Start</option>
+                            <option value="stop">Stop</option>
+                            <option value="restart">Restart</option>
+                            <option value="status">Status</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

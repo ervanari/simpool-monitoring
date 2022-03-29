@@ -4,6 +4,7 @@ const express = require("express");
 const router = express.Router();
 const request = require("../request");
 const moment = require("moment");
+const axios = require("axios");
 
 router.get("/", async function (req, res, next) {
   const loginMessage = req.session.loginMessage;
@@ -91,7 +92,8 @@ router.get("/dashboard", async function (req, res, next) {
     } else {
       res.redirect("/auth/logout");
     }
-  } catch {
+  } catch (err) {
+    console.log(err);
     res.redirect("/auth/logout");
   }
 });
@@ -132,10 +134,12 @@ router.post("/update", async function (req, res, next) {
         } catch (err) {
           // res.redirect("/dashboard");
           alert(err);
+          console.log(err);
         }
       }
     }
-  } catch {
+  } catch (err) {
+    console.log(err);
     res.redirect("/post");
   }
 });
@@ -148,7 +152,8 @@ router.post("/renewpulsa", async function (req, res, next) {
     if (dataRenew.data.statusCode === 200) {
       res.redirect("/dashboard");
     }
-  } catch {
+  } catch (err) {
+    console.log(err);
     res.redirect("/dashboard");
   }
 });
@@ -162,7 +167,8 @@ router.post("/requestpulsa", async function (req, res, next) {
       req.body
     );
     // console.log(reqpulsa);
-  } catch {
+  } catch (err) {
+    console.log(err);
     res.redirect("/dashboard");
   }
 });
@@ -248,9 +254,53 @@ router.post("/search_data", async function (req, res, next) {
         timeout: portTimeout.length,
       });
     }
-  } catch {
-    // console.log(err);
+  } catch (err) {
+    console.log(err);
     res.redirect("/dashboard");
+  }
+});
+
+router.get("/status_services", async function (req, res, next) {
+  try {
+    const StatusService = await request.actget("monitoring");
+    const LogService = await request.actget("monitoring/log");
+
+    if (StatusService) {
+      res.render("pages/statusService", {
+        title: "Status Service",
+        user: req.session.user,
+        dataService: StatusService.data.status,
+        dataLog: LogService.data.data,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.post("/control_service", async function (req, res, next) {
+  try {
+    console.log("############### " + req.body.run + " ##################");
+    let data = {
+      run: req.body.run,
+    };
+
+    axios({
+      method: "post",
+      url: "http://116.0.1.72:3003/monitoring/run",
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8",
+        origin: "http://localhost:3002",
+      },
+      data: data,
+    }).then(function (res) {
+      console.log(res.data);
+      if (res.status == 200 || res.status == 500) {
+        res.redirect("/dashboard");
+      }
+    });
+  } catch (err) {
+    console.log(err);
   }
 });
 
