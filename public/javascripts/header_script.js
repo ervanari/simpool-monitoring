@@ -58,6 +58,12 @@ const cek_pulsa = (port) => {
   }
 };
 
+const actServices = () => {
+  let type = document.getElementById("run");
+  console.log(type.value);
+  type;
+};
+
 window.addEventListener("DOMContentLoaded", (event) => {
   var socket = io("https://qz-pulsa.intama.online");
   socket.on("connect", function () {
