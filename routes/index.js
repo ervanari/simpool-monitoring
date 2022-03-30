@@ -280,7 +280,6 @@ router.get("/status_services", async function (req, res, next) {
 
 router.post("/control_service", async function (req, res, next) {
   try {
-    console.log("############### " + req.body.run + " ##################");
     let data = {
       run: req.body.run,
     };
@@ -294,13 +293,38 @@ router.post("/control_service", async function (req, res, next) {
       },
       data: data,
     }).then(function (res) {
-      console.log(res.data);
       if (res.status == 200 || res.status == 500) {
         res.redirect("/dashboard");
       }
     });
   } catch (err) {
     console.log(err);
+  }
+});
+
+router.get("/mutationpay", async function (req, res, next) {
+  try {
+    const token = req.session.token;
+
+    let header = {
+      api_key: "47d13777-186d-4dc5-b2c3-30f906c69e74",
+    };
+
+    const getMutation = await request.get("mutation", token, {
+      headers: header,
+    });
+
+    if (getMutation) {
+      res.render("pages/mutations", {
+        title: "Mutation",
+        user: req.session.user,
+        dataMutation: getMutation.data.data,
+        moment: moment,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.redirect("/dashboard");
   }
 });
 

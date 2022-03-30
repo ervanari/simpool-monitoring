@@ -13,6 +13,7 @@ var session = require("express-session");
 var indexRouter = require("./routes/index");
 var authRouter = require("./routes/login.router");
 var statusServiceRouter = require("./routes/status_service.router");
+var mutationRouter = require("./routes/mutation.router");
 
 var app = express();
 
@@ -43,6 +44,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/auth", authRouter);
 app.use("/status_services", statusServiceRouter);
+app.use("/mutationpay", mutationRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

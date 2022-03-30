@@ -73,4 +73,15 @@ const actpost = async (path, token, params = null) => {
   });
 };
 
-module.exports = { get, post, Loginpost, put, actget, actpost };
+const postmutation = async (path, token, params = null) => {
+  return await axios({
+    url: process.env.API_URL + path,
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+      api_key: "47d13777-186d-4dc5-b2c3-30f906c69e74",
+    },
+  });
+};
+
+module.exports = { get, post, Loginpost, put, actget, actpost, postmutation };
