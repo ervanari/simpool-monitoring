@@ -1,0 +1,78 @@
+<%- include('../template/header') -%>
+<%- include("../template/navside") -%>
+<%- include("../template/navbars") -%>
+
+<div class="container-fluid py-4">
+	<div class="row my-3">
+		<div class="col-6">
+
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card my-4">
+				<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+					<div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+						<h6 class="text-white text-capitalize ps-3">Mutation Simpool</h6>
+					</div>
+				</div>
+				<div class="card-body px-0 pb-2">
+					<div class="table-responsive p-4">
+						<table class="table align-items-center mb-0" id="tableMutation">
+							<thead>
+
+								<tr>
+									<th
+										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+										createdAt</th>
+									<th
+										class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+										number</th>
+									<th
+										class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+										balance</th>
+									<th class="text-secondary opacity-7"></th>
+								</tr>
+							</thead>
+							<tbody class="text-truncate">
+								<% for(let i in dataMutation) { %>
+								<tr>
+									<td>
+										<p class="text-xs font-weight-bold mb-0">
+											<%= moment(dataMutation[i].createdAt).format('MMMM Do YYYY, h:mm:ss A z') %>
+										</p>
+									</td>
+									<td>
+										<p class="text-xs text-truncates font-weight-bold mb-0">
+											<%= dataMutation[i].number %>
+										</p>
+									</td>
+									<td class="align-middle text-center text-sm">
+										<p class="text-xs text-truncates font-weight-bold mb-0">
+											<%= dataMutation[i].balance %>
+										</p>
+									</td>
+									<td class="align-middle">
+									</td>
+								</tr>
+								<% } %>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<%- include('../template/footer') -%>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		$('#tableMutation').DataTable({
+			"order": [
+				[3, "desc"]
+			]
+		});
+	});
+</script>
