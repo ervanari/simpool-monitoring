@@ -9,13 +9,16 @@
                 <div class="modal-body justify-content-center p-4">
                     <div>Choice Action.</div>
                     <div class="form-group">
-                        <select class="form-control" id="run" name="run">
+                        <select class="form-control" id="run" name="run" onchange="onchangeOption(this)">
                             <option value="0">-- Select --</option>
-                            <option value="start">Start</option>
+                            <option id="startservice" value="start">Start</option>
                             <option value="stop">Stop</option>
                             <option value="restart">Restart</option>
-                            <option value="status">Status</option>
                         </select>
+                    </div>
+                    <div class="modal-body justify-content-center p-4 d-none">
+                        <input type="text" name="keyser" placeholder="" id="key_service"
+                            class="w-100 p-2 rounded border" required>
                     </div>
                 </div>
                 <div class="modal-footer">

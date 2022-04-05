@@ -64,7 +64,7 @@ const actget = async (path, token, params = null) => {
 const actpost = async (path, token, params = null) => {
   return await axios({
     url: "http://116.0.1.72:3003/" + path,
-    method: "POST",
+    method: "post",
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
       origin: "http://localhost:3002",

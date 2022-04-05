@@ -77,121 +77,323 @@
 	</div>
 </div>
 
-<div class="container-fluid py-4">
+<div class="container-fluid pt-3 pb-0 px-4">
+	<input type="checkbox" id="switch">
+	<div class="app">
+		<div class="content">
+			<label class="labels" for="switch" onclick="switchdisplay(this)">
+				<div class="toggle"></div>
+				<div class="names">
+					<div class="light d-flex flex-row">
+						<i class="material-icons">view_comfy</i>
+						<span class="px-1">
+							Grid
+						</span>
+					</div>
+					<div class="dark d-flex flex-row">
+						<i class="material-icons">view_headline</i>
+						<span class="px-1">
+							List
+						</span>
+					</div>
+				</div>
+			</label>
+		</div>
+	</div>
 	<div class="row">
-		<% for(let i in dataDashboard) { %>
-		<div class="col-xl-3 col-sm-6 mb-xl-0 mt-5">
-			<div class="card" style="background-color: #333338;">
-				<div class="card-header p-2 pt-2" style="background-color: #333338;">
-					<% if(dataDashboard[i].isActive == true){ %>
-					<div
-						class="icon icon-lg icon-shape bg-success shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-						<i class="material-icons opacity-10">done</i>
-					</div>
-					<% } else { %>
-					<div
-						class="icon icon-lg icon-shape bg-danger shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-						<i class="material-icons opacity-10">close</i>
-					</div>
-					<% } %>
+		<div class="col-6 align-items-center">
+			<% if(alertnotif == "success") { %>
+			<script>
+				swal({
+					title: "Message",
+					text: "Success",
+					icon: "success",
+					timer: 2000,
+					buttons: false,
+				});
+			</script>
+			<% } %>
+		</div>
+	</div>
+</div>
 
-					<%  %>
-					<div class="text-end pt-1">
-						<p class="text-sm mb-0 text-capitalize font-weight-bolder" style="color: white;">
-							<%= dataDashboard[i].simNumber%></p>
-					</div>
 
-					<% if(dataDashboard[i].isBooked == true){ %>
-					<div class="d-flex justify-content-end">
-						<div class="pt-1 pr-2">
-							<i class="material-icons opacity-10">sync</i>
-						</div>
-						<div class="pt-1 pr-1">
-							<p class="text-sm mb-0 text-capitalize font-weight-bolder" id="bookeds"
-								style="color: white;">Booked</p>
-						</div>
-					</div>
-					<% } else { %>
-					<div class="d-flex justify-content-end">
-						<div class="pt-1 pr-2">
-							<i class="material-icons opacity-10">sync_disabled</i>
-						</div>
-						<div class="pt-1">
-							<p class="text-sm mb-0 text-capitalize font-weight-bolder" id="bookeds"
-								style="color: white;">Idle</p>
-						</div>
-					</div>
-					<% } %>
+<div class="tab-content" id="nav-tabContent">
+	<div class="tab-pane fade show active" id="grid" role="tabpanel" aria-labelledby="list-home-list">
+		<div class="container-fluid px-4 pt-0">
+			<div class="row">
+				<% for(let i in dataDashboard) { %>
+				<div class="col-xl-3 col-sm-6 mb-xl-0 mt-5">
+					<div class="card" style="background-color: #333338;">
+						<div class="card-header p-2 pt-2" style="background-color: #333338;">
+							<% if(dataDashboard[i].isActive == true){ %>
+							<div
+								class="icon icon-lg icon-shape bg-success shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+								<i class="material-icons opacity-10">done</i>
+							</div>
+							<% } else { %>
+							<div
+								class="icon icon-lg icon-shape bg-danger shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+								<i class="material-icons opacity-10">close</i>
+							</div>
+							<% } %>
 
-					<% for(let j in dataPulsa) { %>
-					<% if(dataDashboard[i].port === dataPulsa[j].deviceData[0].port){ %>
-					<% if(dataPulsa[j].pulsa === undefined){ %>
-					<div class="d-flex justify-content-center">
-						<div class="text-center pt-1 small">
-							IDR 0
+							<%  %>
+							<div class="text-end pt-1">
+								<p class="text-sm mb-0 text-capitalize font-weight-bolder" style="color: white;">
+									<%= dataDashboard[i].simNumber%></p>
+							</div>
+
+							<% if(dataDashboard[i].isBooked == true){ %>
+							<div class="d-flex justify-content-end">
+								<div class="pt-1 pr-2">
+									<i class="material-icons opacity-10">sync</i>
+								</div>
+								<div class="pt-1 pr-1">
+									<p class="text-sm mb-0 text-capitalize font-weight-bolder" id="bookeds"
+										style="color: white;">Booked</p>
+								</div>
+							</div>
+							<% } else { %>
+							<div class="d-flex justify-content-end">
+								<div class="pt-1 pr-2">
+									<i class="material-icons opacity-10">sync_disabled</i>
+								</div>
+								<div class="pt-1">
+									<p class="text-sm mb-0 text-capitalize font-weight-bolder" id="bookeds"
+										style="color: white;">Idle</p>
+								</div>
+							</div>
+							<% } %>
+
+							<% for(let j in dataPulsa) { %>
+							<% if(dataDashboard[i].port != null || dataDashboard[i].port != undefined){ %>
+							<% if(dataDashboard[i].port === dataPulsa[j].deviceData[0].port){ %>
+							<% if(dataPulsa[j].pulsa === undefined){ %>
+							<div class="d-flex justify-content-center">
+								<div class="text-center pt-1 small">
+									IDR 0
+								</div>
+								<button class="btn btn-lg text-start pt-1 icon-update"
+									onclick="modalShow('request_pulsa');cek_pulsa('<%= dataDashboard[i].port %>')">
+									<i class="material-icons opacity-10">perm_phone_msg</i>
+								</button>
+							</div>
+							<% } else {%>
+							<div class="d-flex justify-content-center">
+								<div class="text-center pt-1 small" id="pulsa_data">
+									IDR <%= dataPulsa[j].pulsa%>
+								</div>
+								<button class="btn btn-lg text-start pt-1 icon-update"
+									onclick="modalShow('request_pulsa');cek_pulsa('<%= dataDashboard[i].port %>')">
+									<i class="material-icons opacity-10">perm_phone_msg</i>
+								</button>
+							</div>
+							<% } %>
+							<% } %>
+							<% } else {%>
+							<div class="d-flex justify-content-center">
+								<div class="text-center pt-1 small">
+									IDR 0
+								</div>
+								<button class="btn btn-lg text-start pt-1 icon-update">
+									<i class="material-icons opacity-10"></i>
+								</button>
+							</div>
+							<% } %>
+							<% } %>
 						</div>
-						<button class="btn btn-lg text-start pt-1 icon-update"
-							onclick="modalShow('request_pulsa');cek_pulsa('<%= dataDashboard[i].port %>')">
-							<i class="material-icons opacity-10">perm_phone_msg</i>
+
+						<div class="d-flex">
+							<% if(dataDashboard[i].isActive == true){ %>
+							<div class="card-footer pt-1 px-2">
+								<p class="mb-0"><span
+										class="text-success text-sm font-weight-bolder"><%= dataDashboard[i].port %></p>
+							</div>
+							<% } else { %>
+							<div class="card-footer pt-1 px-2">
+								<p class="mb-0"><span
+										class="text-danger text-sm font-weight-bolder"><%= dataDashboard[i].port%>
+								</p>
+							</div>
+							<% } %>
+							<button class="btn btn-lg text-start pt-1 icon-update"
+								onclick="modalShow('req_expdate');renew_pulsa('<%= dataDashboard[i].port %>')">
+								<i class="material-icons opacity-10">perm_phone_msg</i>
+							</button>
+
+						</div>
+
+						<div class="text-end mt-n3">
+							<p class="text-center text-sm mb-0 text-capitalize font-weight-bolder"
+								style="color: white;">
+								<%= dataDashboard[i].simExp %> </p>
+						</div>
+
+						<button type="submit" class="btn btn-lg"
+							onclick="modalShow('restart_sim');changeRestart('<%= dataDashboard[i].isActive %>', '<%= dataDashboard[i]._id %>', '<%= dataDashboard[i].deviceKey %>')">
+							<% if(dataDashboard[i].isActive == true){ %>
+							<span>
+								Turn Off
+							</span>
+							<% } else { %>
+							<span>
+								Turn On
+							</span>
+							<% } %>
 						</button>
 					</div>
-					<% } else {%>
-					<div class="d-flex justify-content-center">
-						<div class="text-center pt-1 small" id="pulsa_data">
-							IDR <%= dataPulsa[j].pulsa%>
-						</div>
-						<button class="btn btn-lg text-start pt-1 icon-update"
-							onclick="modalShow('request_pulsa');cek_pulsa('<%= dataDashboard[i].port %>')">
-							<i class="material-icons opacity-10">perm_phone_msg</i>
-						</button>
-					</div>
-					<% } %>
-					<% } %>
-					<% } %>
 				</div>
-
-				<div class="d-flex">
-					<% if(dataDashboard[i].isActive == true){ %>
-					<div class="card-footer pt-1 px-2">
-						<p class="mb-0"><span
-								class="text-success text-sm font-weight-bolder"><%= dataDashboard[i].port %></p>
-					</div>
-					<% } else { %>
-					<div class="card-footer pt-1 px-2">
-						<p class="mb-0"><span class="text-danger text-sm font-weight-bolder"><%= dataDashboard[i].port%>
-						</p>
-					</div>
-					<% } %>
-					<button class="btn btn-lg text-start pt-1 icon-update"
-						onclick="modalShow('req_expdate');renew_pulsa('<%= dataDashboard[i].port %>')">
-						<i class="material-icons opacity-10">perm_phone_msg</i>
-					</button>
-
-				</div>
-
-				<div class="text-end mt-n3">
-					<p class="text-center text-sm mb-0 text-capitalize font-weight-bolder" style="color: white;">
-						<%= dataDashboard[i].simExp %> </p>
-				</div>
-
-				<button type="submit" class="btn btn-lg"
-					onclick="modalShow('restart_sim');changeRestart('<%= dataDashboard[i].isActive %>', '<%= dataDashboard[i]._id %>', '<%= dataDashboard[i].deviceKey %>')">
-					<% if(dataDashboard[i].isActive == true){ %>
-					<span>
-						Turn Off
-					</span>
-					<% } else { %>
-					<span>
-						Turn On
-					</span>
-					<% } %>
-				</button>
+				<% } %>
 			</div>
 		</div>
-		<% } %>
+	</div>
+</div>
+
+
+<div class="tab-content" id="nav-tabContent">
+	<div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-home-list">
+		<div class="container-fluid py-4">
+			<div class="row">
+				<div class="col-12">
+					<div class="card my-4">
+						<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+							<div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+								<h6 class="text-white text-capitalize ps-3">Dashboard Simpool</h6>
+							</div>
+						</div>
+						<div class="card-body px-0 pb-2">
+							<div class="table-responsive p-4">
+								<table class="table align-items-center mb-0" id="tablelistSimpool">
+									<thead>
+										<tr>
+											<th
+												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+												Active / Off</th>
+											<th
+												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 w-10">
+												number</th>
+											<th
+												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+												status</th>
+											<th
+												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+												port</th>
+											<th
+												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+												balance</th>
+											<th
+												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+												exp card</th>
+											<th class="text-secondary opacity-7"></th>
+										</tr>
+									</thead>
+									<tbody class="text-truncate">
+										<% for(let i in dataDashboard) { %>
+										<tr>
+											<td>
+												<% if(dataDashboard[i].isActive == true){ %>
+												<p class="text-xs text-success font-weight-bold mb-0">
+													Active
+												</p>
+												<% } else { %>
+												<p class="text-xs text-danger font-weight-bold mb-0">
+													Off
+												</p>
+												<% } %>
+											</td>
+											<td>
+												<p class="text-xs text-truncates font-weight-bold mb-0">
+													<%= dataDashboard[i].simNumber%>
+												</p>
+											</td>
+											<td class="align-middle text-sm">
+												<% if(dataDashboard[i].isBooked == true){ %>
+												<p class="text-xs font-weight-bold mb-0">
+													Booked
+												</p>
+												<% } else { %>
+												<p class="text-xs font-weight-bold mb-0">
+													Idle
+												</p>
+												<% } %>
+											</td>
+											<td>
+												<p class="text-xs font-weight-bold mb-0">
+													<%= dataDashboard[i].port %>
+												</p>
+											</td>
+											<td>
+												<% for(let j in dataPulsa) { %>
+												<% if(dataDashboard[i].port != null || dataDashboard[i].port != undefined){ %>
+												<% if(dataDashboard[i].port === dataPulsa[j].deviceData[0].port){ %>
+												<% if(dataPulsa[j].pulsa === undefined){ %>
+												<p class="text-xs font-weight-bold mb-0">
+													IDR 0
+												</p>
+												<% } else {%>
+												<p class="text-xs font-weight-bold mb-0">
+													IDR <%= dataPulsa[j].pulsa %>
+												</p>
+												<% } %>
+												<% } %>
+												<% } else {%>
+												<p class="text-xs font-weight-bold mb-0">
+													IDR 0
+												</p>
+												<% } %>
+												<% } %>
+											</td>
+											<td>
+												<p class="text-xs font-weight-bold mb-0">
+													<%= dataDashboard[i].simExp %>
+												</p>
+											</td>
+											<td class="align-middle">
+												<button class="btn btn-danger"
+													onclick="modalShow('req_expdate');renew_pulsa('<%= dataDashboard[i].port %>')">
+													<span class="material-icons opacity-10" id="deleteKeyBtn">
+														perm_phone_msg
+													</span>
+													<span>
+														Cek Exp Date
+													</span>
+												</button>
+												<a href="javascript:;" class="text-secondary font-weight-bold text-xs"
+													onclick="modalShow('request_pulsa');cek_pulsa('<%= dataDashboard[i].port %>')">
+													<button class="btn btn-primary">
+														<span class="material-icons opacity-10">
+															perm_phone_msg
+														</span>
+														<span>
+															Cek Pulsa
+														</span>
+													</button>
+												</a>
+											</td>
+										</tr>
+										<% } %>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 
 <%- include('../template/footer') -%>
 <%- include("../modals/general_modals/modal_restart") -%>
 <%- include("../modals/general_modals/modal_renew_pulsa") -%>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		$('#tablelistSimpool').DataTable({
+			"order": [
+				[3, "asc"]
+			]
+		});
+	});
+</script>
