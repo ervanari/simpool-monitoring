@@ -58,17 +58,37 @@ const cek_pulsa = (port) => {
   }
 };
 
-const actServices = () => {
-  let type = document.getElementById("run");
-  console.log(type.value);
-  type;
+const actServices = (datakey, datastatus) => {
+  let serviceKey = document.getElementById("key_service");
+  serviceKey.value = datakey;
+
+  onchangeOption(datakey, datastatus);
+};
+
+const onchangeOption = (datakey, datastatus) => {
+  if (datastatus == "online") {
+    document.getElementById("startservice").style.display = "none";
+  }
+};
+
+const switchdisplay = (param) => {
+  if (document.getElementById("switch").checked) {
+    document.getElementById("grid").style.display = "block";
+    document.getElementById("list").style.display = "none";
+  } else {
+    document.getElementById("grid").style.display = "none";
+    document.getElementById("list").style.display = "block";
+  }
 };
 
 window.addEventListener("DOMContentLoaded", (event) => {
+  document.getElementById("list").style.display = "none";
+
   var socket = io("https://qz-pulsa.intama.online");
   socket.on("connect", function () {
     console.info("Socket connect");
   });
+
   socket.on(
     "payment_completed::0f289dc7-c77a-48bc-abbc-82b389909c73",
     function (data) {
@@ -78,12 +98,14 @@ window.addEventListener("DOMContentLoaded", (event) => {
       }
     }
   );
+
   socket.on("pulsa_in::0f289dc7-c77a-48bc-abbc-82b389909c73", function (data) {
     // console.log("pulsa_in", data)
     if (data != "") {
       window.location.href = "/dashboard";
     }
   });
+
   socket.on(
     "device_update::0f289dc7-c77a-48bc-abbc-82b389909c73",
     function (data) {
@@ -93,6 +115,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
       }
     }
   );
+
   socket.on(
     "ussd_dial_message::0f289dc7-c77a-48bc-abbc-82b389909c73",
     function (data) {

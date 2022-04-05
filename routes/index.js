@@ -77,19 +77,23 @@ router.get("/dashboard", async function (req, res, next) {
     });
 
     if (dashboardData) {
-      res.render("pages/dashboard", {
-        title: "Dashboard",
-        user: req.session.user,
-        dataDashboard: allData,
-        dataPulsa: getPulsa.data.data,
-        dataMutation: getMutation.data.data,
-        active: portActive.length,
-        off: portOff.length,
-        booked: portBooked.length,
-        idle: portIdle.length,
-        // expired: portExpired,
-        timeout: portTimeout.length,
-      });
+      res.render(
+        "pages/dashboard",
+        {
+          title: "Dashboard",
+          user: req.session.user,
+          dataDashboard: allData,
+          dataPulsa: getPulsa.data.data,
+          dataMutation: getMutation.data.data,
+          active: portActive.length,
+          off: portOff.length,
+          booked: portBooked.length,
+          idle: portIdle.length,
+          alertnotif: req.session.alertnotif,
+          timeout: portTimeout.length,
+        },
+        (req.session.postGenerate = undefined)
+      );
     } else {
       res.redirect("/auth/logout");
     }
@@ -130,6 +134,7 @@ router.post("/update", async function (req, res, next) {
           );
 
           if (dataKey.status === 200) {
+            req.session.alertnotif = "success";
             res.redirect("/dashboard");
           }
         } catch (err) {
@@ -151,6 +156,7 @@ router.post("/renewpulsa", async function (req, res, next) {
     const dataRenew = await request.post("devices/ussdDial", token, req.body);
 
     if (dataRenew.data.statusCode === 200) {
+      req.session.alertnotif = "success";
       res.redirect("/dashboard");
     }
   } catch (err) {
@@ -167,7 +173,11 @@ router.post("/requestpulsa", async function (req, res, next) {
       token,
       req.body
     );
-    // console.log(reqpulsa);
+
+    if (reqpulsa.data.statusCode == 200) {
+      req.session.alertnotif = "success";
+      res.redirect("/dashboard");
+    }
   } catch (err) {
     console.log(err);
     res.redirect("/dashboard");
@@ -265,14 +275,19 @@ router.get("/status_services", async function (req, res, next) {
   try {
     const StatusService = await request.actget("monitoring");
     const LogService = await request.actget("monitoring/log");
-
     if (StatusService) {
-      res.render("pages/statusService", {
-        title: "Status Service",
-        user: req.session.user,
-        dataService: StatusService.data.status,
-        dataLog: LogService.data.data,
-      });
+      res.render(
+        "pages/statusService",
+        {
+          title: "Status Service",
+          user: req.session.user,
+          dataServiceStatus: StatusService.data.status,
+          dataServiceKey: StatusService.data.key,
+          dataLog: LogService.data.data,
+          alertnotif: req.session.alertnotif,
+        },
+        (req.session.postGenerate = undefined)
+      );
     }
   } catch (err) {
     console.log(err);
@@ -283,7 +298,15 @@ router.post("/control_service", async function (req, res, next) {
   try {
     let data = {
       run: req.body.run,
+      key: req.body.keyser,
     };
+    const rest = res;
+    const reqs = req;
+    // const service_control = await request.actpost(
+    //   "http://116.0.1.72:3003/monitoring/run",
+    //   data
+    // );
+    // console.log("service_control ==>> ", service_control);
 
     axios({
       method: "post",
@@ -294,8 +317,9 @@ router.post("/control_service", async function (req, res, next) {
       },
       data: data,
     }).then(function (res) {
-      if (res.status == 200 || res.status == 500) {
-        res.redirect("/dashboard");
+      if (res.status == 200) {
+        reqs.session.alertnotif = "success";
+        rest.redirect("/status_services");
       }
     });
   } catch (err) {

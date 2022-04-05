@@ -4,6 +4,24 @@
 
 <div class="container-fluid pt-3 pb-0 px-4">
     <div class="row">
+        <div class="col-6 align-items-center">
+            <% if(alertnotif == "success") { %>
+            <script>
+                swal({
+                    title: "Message",
+                    text: "Success",
+                    icon: "success",
+                    timer: 2000,
+                    buttons: false,
+                });
+            </script>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid pt-3 pb-0 px-4">
+    <div class="row">
         <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="p-3 pt-2">
@@ -11,10 +29,10 @@
                         <p class="text-start text-sm mb-0 text-capitalize text-dark font-weight-bolder">Status
                             Simpool
                         </p>
-                        <% if(dataService == "online"){ %>
-                        <h4 class="text-end text-success mb-0"> <%= dataService %> </h4>
+                        <% if(dataServiceStatus == "online"){ %>
+                        <h4 class="text-end text-success mb-0"> <%= dataServiceStatus %> </h4>
                         <% } else { %>
-                        <h4 class="text-end text-danger mb-0"> Stoped </h4>
+                        <h4 class="text-end text-danger mb-0"> <%= dataServiceStatus %> </h4>
                         <% } %>
 
                     </div>
@@ -28,7 +46,8 @@
                         <p class="text-start text-sm mb-0 text-capitalize text-dark font-weight-bolder">Control
                             Services
                         </p>
-                        <button class="btn-primary rounded px-4" onclick="modalShow('restart_services');actServices()">
+                        <button class="btn-primary rounded px-4" onclick="modalShow('restart_services');actServices('<%= dataServiceKey %>',
+                            '<%= dataServiceStatus %>')">
                             <span>
                                 Setting
                             </span>
