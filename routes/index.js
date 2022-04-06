@@ -273,8 +273,12 @@ router.post("/search_data", async function (req, res, next) {
 
 router.get("/status_services", async function (req, res, next) {
   try {
+    const token = req.session.token;
     const StatusService = await request.actget("monitoring");
-    const LogService = await request.actget("monitoring/log");
+    const LogService = await request.get("activities?limit=0&offset=0", token);
+
+    console.log("LogService ==>> ", LogService);
+
     if (StatusService) {
       res.render(
         "pages/statusService",
@@ -283,7 +287,7 @@ router.get("/status_services", async function (req, res, next) {
           user: req.session.user,
           dataServiceStatus: StatusService.data.status,
           dataServiceKey: StatusService.data.key,
-          dataLog: LogService.data.data,
+          dataLog: LogService.data.data.activities,
           alertnotif: req.session.alertnotif,
         },
         (req.session.postGenerate = undefined)

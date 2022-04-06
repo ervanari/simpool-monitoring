@@ -21,6 +21,8 @@
 						<span class="nav-link-text ms-1">Dashboards</span>
 					</a>
 				</li>
+
+				<% if(user.role == "admin" || user.role == "superAdmin") { %>
 				<li class="nav-item">
 					<a class="nav-link text-white <%= title == "Status_Service" ? "active bg-gradient-primary" : ""%>"
 						href="/status_services">
@@ -30,6 +32,8 @@
 						<span class="nav-link-text ms-1">Status Services</span>
 					</a>
 				</li>
+				<% } %>
+
 				<li class="nav-item">
 					<a class="nav-link text-white <%= title == "Mutation" ? "active bg-gradient-primary" : ""%>"
 						href="/mutationpay">
