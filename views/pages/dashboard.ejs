@@ -122,10 +122,13 @@
 	<div class="tab-pane fade show active" id="grid" role="tabpanel" aria-labelledby="list-home-list">
 		<div class="container-fluid px-4 pt-0">
 			<div class="row">
+
 				<% for(let i in dataDashboard) { %>
+
 				<div class="col-xl-3 col-sm-6 mb-xl-0 mt-5">
 					<div class="card" style="background-color: #333338;">
 						<div class="card-header p-2 pt-2" style="background-color: #333338;">
+
 							<% if(dataDashboard[i].isActive == true){ %>
 							<div
 								class="icon icon-lg icon-shape bg-success shadow-dark text-center border-radius-xl mt-n4 position-absolute">
@@ -138,7 +141,6 @@
 							</div>
 							<% } %>
 
-							<%  %>
 							<div class="text-end pt-1">
 								<p class="text-sm mb-0 text-capitalize font-weight-bolder" style="color: white;">
 									<%= dataDashboard[i].simNumber%></p>
@@ -168,30 +170,41 @@
 
 							<% for(let j in dataPulsa) { %>
 							<% if(dataDashboard[i].port != null || dataDashboard[i].port != undefined){ %>
-							<% if(dataDashboard[i].port === dataPulsa[j].deviceData[0].port){ %>
-							<% if(dataPulsa[j].pulsa === undefined){ %>
+							<% if(dataDashboard[i].port == dataPulsa[j].deviceData[0].port){ %>
+							<% if(dataPulsa[j].pulsa == undefined){ %>
+
 							<div class="d-flex justify-content-center">
 								<div class="text-center pt-1 small">
 									IDR 0
 								</div>
+								<% if(user.role === "admin" || user.role === "superAdmin") { %>
 								<button class="btn btn-lg text-start pt-1 icon-update"
 									onclick="modalShow('request_pulsa');cek_pulsa('<%= dataDashboard[i].port %>')">
 									<i class="material-icons opacity-10">perm_phone_msg</i>
 								</button>
+								<% } %>
+
 							</div>
+
 							<% } else {%>
+
 							<div class="d-flex justify-content-center">
 								<div class="text-center pt-1 small" id="pulsa_data">
 									IDR <%= dataPulsa[j].pulsa%>
 								</div>
+
+								<% if(user.role === "admin" || user.role === "superAdmin") { %>
 								<button class="btn btn-lg text-start pt-1 icon-update"
 									onclick="modalShow('request_pulsa');cek_pulsa('<%= dataDashboard[i].port %>')">
 									<i class="material-icons opacity-10">perm_phone_msg</i>
 								</button>
+								<% } %>
 							</div>
+
 							<% } %>
 							<% } %>
 							<% } else {%>
+
 							<div class="d-flex justify-content-center">
 								<div class="text-center pt-1 small">
 									IDR 0
@@ -200,36 +213,34 @@
 									<i class="material-icons opacity-10"></i>
 								</button>
 							</div>
+
 							<% } %>
 							<% } %>
 						</div>
 
 						<div class="d-flex">
-							<% if(dataDashboard[i].isActive == true){ %>
+
 							<div class="card-footer pt-1 px-2">
-								<p class="mb-0"><span
-										class="text-success text-sm font-weight-bolder"><%= dataDashboard[i].port %></p>
+								<p class="mb-0"><span class="<%= dataDashboard[i].isActive == true ? "text-success" : "text-danger" %> text-sm
+											font-weight-bolder"><%= dataDashboard[i].port %></p>
 							</div>
-							<% } else { %>
-							<div class="card-footer pt-1 px-2">
-								<p class="mb-0"><span
-										class="text-danger text-sm font-weight-bolder"><%= dataDashboard[i].port%>
-								</p>
-							</div>
-							<% } %>
+
+							<% if(user.role === "admin" || user.role === "superAdmin") { %>
 							<button class="btn btn-lg text-start pt-1 icon-update"
 								onclick="modalShow('req_expdate');renew_pulsa('<%= dataDashboard[i].port %>')">
 								<i class="material-icons opacity-10">perm_phone_msg</i>
 							</button>
+							<% } %>
 
 						</div>
 
 						<div class="text-end mt-n3">
-							<p class="text-center text-sm mb-0 text-capitalize font-weight-bolder"
+							<p class="text-center text-sm <%= user.role === "admin" || user.role === "superAdmin" ? "mb-0" : "mb-3" %>  text-capitalize font-weight-bolder"
 								style="color: white;">
 								<%= dataDashboard[i].simExp %> </p>
 						</div>
 
+						<% if(user.role === "admin" || user.role === "superAdmin") { %>
 						<button type="submit" class="btn btn-lg"
 							onclick="modalShow('restart_sim');changeRestart('<%= dataDashboard[i].isActive %>', '<%= dataDashboard[i]._id %>', '<%= dataDashboard[i].deviceKey %>')">
 							<% if(dataDashboard[i].isActive == true){ %>
@@ -242,6 +253,7 @@
 							</span>
 							<% } %>
 						</button>
+						<% } %>
 					</div>
 				</div>
 				<% } %>
@@ -292,15 +304,10 @@
 										<% for(let i in dataDashboard) { %>
 										<tr>
 											<td>
-												<% if(dataDashboard[i].isActive == true){ %>
-												<p class="text-xs text-success font-weight-bold mb-0">
-													Active
+												<p
+													class="text-xs <%= dataDashboard[i].isActive == true ? "text-success" : "text-danger" %> text-success font-weight-bold mb-0">
+													<%= dataDashboard[i].isActive == true ? "Active" : "Off" %>
 												</p>
-												<% } else { %>
-												<p class="text-xs text-danger font-weight-bold mb-0">
-													Off
-												</p>
-												<% } %>
 											</td>
 											<td>
 												<p class="text-xs text-truncates font-weight-bold mb-0">
@@ -308,15 +315,9 @@
 												</p>
 											</td>
 											<td class="align-middle text-sm">
-												<% if(dataDashboard[i].isBooked == true){ %>
 												<p class="text-xs font-weight-bold mb-0">
-													Booked
+													<%= dataDashboard[i].isBooked == true ? "Booked" : "Idle" %>
 												</p>
-												<% } else { %>
-												<p class="text-xs font-weight-bold mb-0">
-													Idle
-												</p>
-												<% } %>
 											</td>
 											<td>
 												<p class="text-xs font-weight-bold mb-0">
@@ -324,6 +325,7 @@
 												</p>
 											</td>
 											<td>
+
 												<% for(let j in dataPulsa) { %>
 												<% if(dataDashboard[i].port != null || dataDashboard[i].port != undefined){ %>
 												<% if(dataDashboard[i].port === dataPulsa[j].deviceData[0].port){ %>
@@ -343,6 +345,7 @@
 												</p>
 												<% } %>
 												<% } %>
+
 											</td>
 											<td>
 												<p class="text-xs font-weight-bold mb-0">
@@ -350,6 +353,8 @@
 												</p>
 											</td>
 											<td class="align-middle">
+
+												<% if(user.role === "admin" || user.role === "superAdmin") { %>
 												<button class="btn btn-danger"
 													onclick="modalShow('req_expdate');renew_pulsa('<%= dataDashboard[i].port %>')">
 													<span class="material-icons opacity-10" id="deleteKeyBtn">
@@ -370,6 +375,8 @@
 														</span>
 													</button>
 												</a>
+												<% } %>
+
 											</td>
 										</tr>
 										<% } %>
@@ -393,6 +400,9 @@
 		$('#tablelistSimpool').DataTable({
 			"order": [
 				[3, "asc"]
+			],
+			"buttons": [
+				'copy', 'csv', 'excel', 'pdf', 'print'
 			]
 		});
 	});
