@@ -92,7 +92,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
   socket.on(
     "payment_completed::0f289dc7-c77a-48bc-abbc-82b389909c73",
     function (data) {
-      // console.log("payment_completed", data)
       if (data != "") {
         window.location.href = "/dashboard";
       }
@@ -100,7 +99,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
   );
 
   socket.on("pulsa_in::0f289dc7-c77a-48bc-abbc-82b389909c73", function (data) {
-    // console.log("pulsa_in", data)
     if (data != "") {
       window.location.href = "/dashboard";
     }
@@ -109,7 +107,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
   socket.on(
     "device_update::0f289dc7-c77a-48bc-abbc-82b389909c73",
     function (data) {
-      // console.log("device_update", data)
       if (data != "") {
         window.location.href = "/dashboard";
       }
@@ -119,7 +116,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
   socket.on(
     "ussd_dial_message::0f289dc7-c77a-48bc-abbc-82b389909c73",
     function (data) {
-      // console.log("ussd_dial_message", data)
       if (data != "") {
         window.location.href = "/dashboard";
       }

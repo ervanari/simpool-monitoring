@@ -366,7 +366,7 @@ router.get("/inbox", async function (req, res, next) {
   try {
     const token = req.session.token;
 
-    const getInbox = await request.get("sms?limit=1000&offset=0", token);
+    const getInbox = await request.get("sms?limit=0&offset=0", token);
 
     if (getInbox) {
       res.render("pages/inbox", {

@@ -15,32 +15,48 @@
                     <div class="table-responsive p-4">
                         <table class="table align-items-center mb-0" id="tableinbox">
                             <thead>
-
                                 <tr>
                                     <th
                                         class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Time</th>
                                     <th
                                         class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Port</th>
+                                    <th
+                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Message</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        From Message</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Destination Number</th>
+
                                     <th class="text-secondary opacity-7"></th>
                                 </tr>
                             </thead>
                             <tbody class="text-truncate">
                                 <% for(let e in dataInbox) { %>
-                                <tr>
+
+                                <tr class="exploder">
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0">
-                                            <%= moment(dataInbox[e].time).tz("Asia/Jakarta").format('MMMM Do YYYY, h:mm:ss A z'); %>
+                                            <%= moment(dataInbox[e].time).format('MMMM Do YYYY, h:mm:ss A z'); %>
                                         </p>
                                     </td>
                                     <td>
-                                        <p class="text-xs text-truncates font-weight-bold mb-0" data-toggle="tooltip"
-                                            data-placement="top" title="<%= dataInbox[e].message %>">
+                                        <p class="text-xs text-truncates font-weight-bold mb-0">
+                                            <%= dataInbox[e].device %>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs text-truncates font-weight-bold mb-0">
                                             <%= dataInbox[e].message %>
+                                        </p>
+                                    </td>
+                                    <td class="align-middle text-center text-sm">
+                                        <p class="text-xs text-truncates font-weight-bold mb-0">
+                                            <%= dataInbox[e].from %>
                                         </p>
                                     </td>
                                     <td class="align-middle text-center text-sm">
@@ -48,10 +64,21 @@
                                             <%= dataInbox[e].to %>
                                         </p>
                                     </td>
+
                                     <td class="align-middle">
                                     </td>
                                 </tr>
+
+                                <tr class="explode hide">
+                                    <td colspan="6" style="background: #CCC; display: none;">
+                                        <p class="text-xs font-weight-bold mb-0">
+                                            <%= dataInbox[e].message %>
+                                        </p>
+                                    </td>
+                                </tr>
+
                                 <% } %>
+
                             </tbody>
                         </table>
                     </div>
@@ -66,9 +93,38 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         $('#tableinbox').DataTable({
-            // "order": [
-            //     [3, "desc"]
-            // ]
+            "order": [
+                [3, "desc"]
+            ]
         });
     });
+
+    $(".exploder").click(function () {
+        $(this).toggleClass("btn-success btn-danger");
+
+        $(this).children("span").toggleClass("glyphicon-search glyphicon-zoom-out");
+
+        $(this).closest("tr").next("tr").toggleClass("hide");
+
+        if ($(this).closest("tr").next("tr").hasClass("hide")) {
+            $(this).closest("tr").next("tr").children("td").slideUp();
+        } else {
+            $(this).closest("tr").next("tr").children("td").slideDown(100);
+        }
+    });
+
+    // $('#tableinbox tbody').on('click', 'td.dt-control', function () {
+    //     var tr = $(this).closest('tr');
+    //     var row = table.row(tr);
+
+    //     if (row.child.isShown()) {
+    //         // This row is already open - close it
+    //         row.child.hide();
+    //         tr.removeClass('shown');
+    //     } else {
+    //         // Open this row
+    //         row.child(format(row.data())).show();
+    //         tr.addClass('shown');
+    //     }
+    // });
 </script>
