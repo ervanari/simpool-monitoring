@@ -38,7 +38,7 @@
                             <tbody class="text-truncate">
                                 <% for(let e in dataInbox) { %>
 
-                                <tr class="exploder">
+                                <tr>
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0">
                                             <%= moment(dataInbox[e].time).format('MMMM Do YYYY, h:mm:ss A z'); %>
@@ -49,7 +49,7 @@
                                             <%= dataInbox[e].device %>
                                         </p>
                                     </td>
-                                    <td>
+                                    <td onclick="modalShow('popup_sms');smsMasuk('<%= dataInbox[e].message %>')">
                                         <p class="text-xs text-truncates font-weight-bold mb-0">
                                             <%= dataInbox[e].message %>
                                         </p>
@@ -69,13 +69,14 @@
                                     </td>
                                 </tr>
 
-                                <tr class="explode hide">
+                                <!-- <tr class="explode hide">
                                     <td colspan="6" style="background: #CCC; display: none;">
                                         <p class="text-xs font-weight-bold mb-0">
-                                            <%= dataInbox[e].message %>
+                                            <%# dataInbox[e].message %>
                                         </p>
                                     </td>
-                                </tr>
+                                </tr> -->
+
 
                                 <% } %>
 
@@ -89,6 +90,7 @@
 </div>
 
 <%- include('../template/footer') -%>
+<%- include("../modals/general_modals/modal_sms") -%>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -99,32 +101,17 @@
         });
     });
 
-    $(".exploder").click(function () {
-        $(this).toggleClass("btn-success btn-danger");
+    // $(".exploder").click(function () {
+    //     $(this).toggleClass("btn-success btn-danger");
 
-        $(this).children("span").toggleClass("glyphicon-search glyphicon-zoom-out");
+    //     $(this).children("span").toggleClass("glyphicon-search glyphicon-zoom-out");
 
-        $(this).closest("tr").next("tr").toggleClass("hide");
+    //     $(this).closest("tr").next("tr").toggleClass("hide");
 
-        if ($(this).closest("tr").next("tr").hasClass("hide")) {
-            $(this).closest("tr").next("tr").children("td").slideUp();
-        } else {
-            $(this).closest("tr").next("tr").children("td").slideDown(100);
-        }
-    });
-
-    // $('#tableinbox tbody').on('click', 'td.dt-control', function () {
-    //     var tr = $(this).closest('tr');
-    //     var row = table.row(tr);
-
-    //     if (row.child.isShown()) {
-    //         // This row is already open - close it
-    //         row.child.hide();
-    //         tr.removeClass('shown');
+    //     if ($(this).closest("tr").next("tr").hasClass("hide")) {
+    //         $(this).closest("tr").next("tr").children("td").slideUp();
     //     } else {
-    //         // Open this row
-    //         row.child(format(row.data())).show();
-    //         tr.addClass('shown');
+    //         $(this).closest("tr").next("tr").children("td").slideDown(100);
     //     }
     // });
 </script>

@@ -81,6 +81,11 @@ const switchdisplay = (param) => {
   }
 };
 
+const smsMasuk = (data) => {
+  let bSms = document.getElementById("bodysms");
+  bSms.innerHTML = data;
+};
+
 window.addEventListener("DOMContentLoaded", (event) => {
   document.getElementById("list").style.display = "none";
 
