@@ -92,7 +92,7 @@ router.get("/dashboard", async function (req, res, next) {
           alertnotif: req.session.alertnotif,
           timeout: portTimeout.length,
         },
-        (req.session.postGenerate = undefined)
+        (req.session.alertnotif = undefined)
       );
     } else {
       res.redirect("/auth/logout");
@@ -252,18 +252,23 @@ router.post("/search_data", async function (req, res, next) {
     }
 
     if (dashboardData) {
-      res.render("pages/dashboard", {
-        title: "Dashboard",
-        user: req.session.user,
-        dataDashboard: newList,
-        dataPulsa: getPulsa.data.data,
-        dataMutation: getMutation.data.data,
-        active: portActive.length,
-        off: portOff.length,
-        booked: portBooked.length,
-        idle: portIdle.length,
-        timeout: portTimeout.length,
-      });
+      res.render(
+        "pages/dashboard",
+        {
+          title: "Dashboard",
+          user: req.session.user,
+          dataDashboard: newList,
+          dataPulsa: getPulsa.data.data,
+          dataMutation: getMutation.data.data,
+          active: portActive.length,
+          off: portOff.length,
+          booked: portBooked.length,
+          idle: portIdle.length,
+          timeout: portTimeout.length,
+          alertnotif: req.session.alertnotif,
+        },
+        (req.session.alertnotif = undefined)
+      );
     }
   } catch (err) {
     console.log(err);
@@ -290,7 +295,7 @@ router.get("/status_services", async function (req, res, next) {
           dataLog: LogService.data.data.activities,
           alertnotif: req.session.alertnotif,
         },
-        (req.session.postGenerate = undefined)
+        (req.session.alertnotif = undefined)
       );
     }
   } catch (err) {
@@ -348,6 +353,26 @@ router.get("/mutationpay", async function (req, res, next) {
         title: "Mutation",
         user: req.session.user,
         dataMutation: getMutation.data.data,
+        moment: moment,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.redirect("/dashboard");
+  }
+});
+
+router.get("/inbox", async function (req, res, next) {
+  try {
+    const token = req.session.token;
+
+    const getInbox = await request.get("sms?limit=1000&offset=0", token);
+
+    if (getInbox) {
+      res.render("pages/inbox", {
+        title: "Inbox",
+        user: req.session.user,
+        dataInbox: getInbox.data.data.sms,
         moment: moment,
       });
     }
