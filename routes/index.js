@@ -397,13 +397,18 @@ router.get("/transfer_pulsa", async function (req, res, next) {
     });
 
     if (getNumber) {
-      res.render("pages/exchange", {
-        title: "Transfer Out",
-        user: req.session.user,
-        dataNumber: getNumber.data.data,
-        dataMutation: getMutation.data.data,
-        moment: moment,
-      });
+      res.render(
+        "pages/singleTransfer",
+        {
+          title: "Single Transfer",
+          user: req.session.user,
+          dataNumber: getNumber.data.data,
+          dataMutation: getMutation.data.data,
+          moment: moment,
+          alertnotif: req.session.alertnotif,
+        },
+        (req.session.alertnotif = undefined)
+      );
     }
   } catch (err) {
     console.log(err);
@@ -415,14 +420,72 @@ router.post("/req_transfer_pulsa", async function (req, res, next) {
   try {
     const token = req.session.token;
 
-    console.log("req.body ==>", req.body);
+    let sendData = {
+      port: req.body.port,
+      phone: req.body.phone,
+      amount: parseInt(req.body.amount),
+    };
 
-    // const dataRenew = await request.post("devices/ussdDial", token, req.body);
+    const reqPulsa = await request.post("exchange/transfer", token, sendData);
 
-    // if (dataRenew.data.statusCode === 200) {
-    //   req.session.alertnotif = "success";
-    //   res.redirect("/dashboard");
-    // }
+    console.log("req.body ==>", reqPulsa);
+
+    if (reqPulsa.data.statusCode === 200) {
+      req.session.alertnotif = "success";
+      res.redirect("/dashboard");
+    }
+  } catch (err) {
+    console.log(err);
+    res.redirect("/transfer_pulsa");
+  }
+});
+
+router.get("/bulk_transfer_pulsa", async function (req, res, next) {
+  try {
+    const token = req.session.token;
+
+    const getNumber = await request.get("providers/all", token);
+
+    let header = {
+      api_key: "47d13777-186d-4dc5-b2c3-30f906c69e74",
+    };
+
+    const getMutation = await request.get("mutation", token, {
+      headers: header,
+    });
+
+    if (getNumber) {
+      res.render(
+        "pages/bulkTransfer",
+        {
+          title: "Bulk Trasfer",
+          user: req.session.user,
+          dataNumber: getNumber.data.data,
+          dataMutation: getMutation.data.data,
+          moment: moment,
+          alertnotif: req.session.alertnotif,
+        },
+        (req.session.alertnotif = undefined)
+      );
+    }
+  } catch (err) {
+    console.log(err);
+    res.redirect("/transfer_pulsa");
+  }
+});
+
+router.post("/req_bulk_transfer_pulsa", async function (req, res, next) {
+  try {
+    const token = req.session.token;
+
+    const reqPulsa = await request.post("exchange/transfer", token, req.body);
+
+    console.log("req.body ==>", reqPulsa);
+
+    if (dataRenew.data.statusCode === 200) {
+      req.session.alertnotif = "success";
+      res.redirect("/dashboard");
+    }
   } catch (err) {
     console.log(err);
     res.redirect("/transfer_pulsa");

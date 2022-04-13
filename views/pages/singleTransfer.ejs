@@ -2,6 +2,21 @@
 <%- include("../template/navside") -%>
 <%- include("../template/navbars") -%>
 
+<div class="row">
+    <div class="col-6 align-items-center">
+        <% if(alertnotif == "success" && alertnotif != "undefined") { %>
+        <script>
+            swal({
+                title: "Message",
+                text: "Success",
+                icon: "success",
+                timer: 2000,
+                buttons: false,
+            });
+        </script>
+        <% } %>
+    </div>
+</div>
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">

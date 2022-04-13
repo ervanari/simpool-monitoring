@@ -1,0 +1,113 @@
+<%- include('../template/header') -%>
+<%- include("../template/navside") -%>
+<%- include("../template/navbars") -%>
+
+<div class="row">
+    <div class="col-6 align-items-center">
+        <% if(alertnotif == "success" && alertnotif != "undefined") { %>
+        <script>
+            swal({
+                title: "Message",
+                text: "Success",
+                icon: "success",
+                timer: 2000,
+                buttons: false,
+            });
+        </script>
+        <% } %>
+    </div>
+</div>
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card my-4">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                        <h6 class="text-white text-capitalize ps-3">Transfer Pulsa</h6>
+                    </div>
+                </div>
+                <div class="card-body px-4 py-2">
+                    <form action="/req_transfer_pulsa" method="POST">
+                        <div class="form-row align-items-end">
+                            <div class="col-4 my-1">
+                                <label class="mr-sm-2" for="inlineFormCustomSelect">Provider</label>
+                                <input type="file" class="form-control" id="customFile" />
+                            </div>
+                            <div class="col-4 my-1">
+                                <label class="mr-sm-2" for="inlineFormCustomSelect">Nomor Asal</label>
+                                <input type="file" class="form-control" id="customFile" />
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-4 my-1">
+                                <button type="submit" class="btn btn-primary mb-0">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-body px-4">
+                    <div class="table-responsive table-stre p-2">
+                        <table class="table table-striped align-items-center mb-0" id="tableHistoryTransfer">
+                            <thead>
+                                <tr>
+                                    <th
+                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        createdAt</th>
+                                    <th
+                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        From Number</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        To Number</th>
+                                    <!-- <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Amount</th> -->
+
+                                    <th class="text-secondary opacity-7"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-truncate">
+                                <% for(let i in dataMutation) { %>
+                                <tr>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">
+                                            <%= moment(dataMutation[i].createdAt).tz("Asia/Jakarta").format('MMMM Do YYYY, h:mm:ss A z'); %>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs text-truncates font-weight-bold mb-0">
+                                            <%= dataMutation[i].number %>
+                                        </p>
+                                    </td>
+                                    <td class="align-middle text-center text-sm">
+                                        <p class="text-xs text-truncates font-weight-bold mb-0">
+                                            <%= dataMutation[i].balance %>
+                                        </p>
+                                    </td>
+                                    <td class="align-middle">
+                                    </td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../template/footer') -%>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        $('#tableHistoryTransfer').DataTable({
+            "order": [
+                [2, "desc"],
+                [0, "asc"]
+            ]
+        });
+    });
+</script>
