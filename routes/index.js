@@ -382,4 +382,51 @@ router.get("/inbox", async function (req, res, next) {
   }
 });
 
+router.get("/transfer_pulsa", async function (req, res, next) {
+  try {
+    const token = req.session.token;
+
+    const getNumber = await request.get("providers/all", token);
+
+    let header = {
+      api_key: "47d13777-186d-4dc5-b2c3-30f906c69e74",
+    };
+
+    const getMutation = await request.get("mutation", token, {
+      headers: header,
+    });
+
+    if (getNumber) {
+      res.render("pages/exchange", {
+        title: "Transfer Out",
+        user: req.session.user,
+        dataNumber: getNumber.data.data,
+        dataMutation: getMutation.data.data,
+        moment: moment,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.redirect("/transfer_pulsa");
+  }
+});
+
+router.post("/req_transfer_pulsa", async function (req, res, next) {
+  try {
+    const token = req.session.token;
+
+    console.log("req.body ==>", req.body);
+
+    // const dataRenew = await request.post("devices/ussdDial", token, req.body);
+
+    // if (dataRenew.data.statusCode === 200) {
+    //   req.session.alertnotif = "success";
+    //   res.redirect("/dashboard");
+    // }
+  } catch (err) {
+    console.log(err);
+    res.redirect("/transfer_pulsa");
+  }
+});
+
 module.exports = router;
