@@ -86,6 +86,10 @@ const smsMasuk = (data) => {
   bSms.innerHTML = data;
 };
 
+const getPulsa = (pulsa) => {
+  // console.log(document.getElementById("inlineFormCustomSelect").value);
+};
+
 window.addEventListener("DOMContentLoaded", (event) => {
   document.getElementById("list").style.display = "none";
 

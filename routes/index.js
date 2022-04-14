@@ -382,4 +382,107 @@ router.get("/inbox", async function (req, res, next) {
   }
 });
 
+router.get("/transfer_pulsa", async function (req, res, next) {
+  try {
+    const token = req.session.token;
+    const getNumber = await request.get("providers/all", token);
+
+    const getHisSingle = await request.get(
+      "exchange/history?limit=0&offset=0",
+      token
+    );
+
+    if (getNumber) {
+      res.render(
+        "pages/singleTransfer",
+        {
+          title: "Single Transfer",
+          user: req.session.user,
+          dataNumber: getNumber.data.data,
+          dataHistory: getHisSingle.data.data.exchanges,
+          moment: moment,
+          alertnotif: req.session.alertnotif,
+        },
+        (req.session.alertnotif = undefined)
+      );
+    }
+  } catch (err) {
+    console.log(err);
+    res.redirect("/transfer_pulsa");
+  }
+});
+
+router.post("/req_transfer_pulsa", async function (req, res, next) {
+  try {
+    const token = req.session.token;
+
+    let sendData = {
+      port: req.body.port,
+      phone: req.body.phone,
+      amount: parseInt(req.body.amount),
+    };
+
+    const reqPulsa = await request.post("exchange/transfer", token, sendData);
+
+    if (reqPulsa.data.statusCode === 200) {
+      req.session.alertnotif = "success";
+      res.redirect("/transfer_pulsa");
+    }
+  } catch (err) {
+    console.log(err);
+    res.redirect("/transfer_pulsa");
+  }
+});
+
+router.get("/bulk_transfer_pulsa", async function (req, res, next) {
+  try {
+    const token = req.session.token;
+
+    const getNumber = await request.get("providers/all", token);
+
+    const getHisBulk = await request.get(
+      "exchange/history?limit=0&offset=0",
+      token
+    );
+
+    if (getNumber) {
+      res.render(
+        "pages/bulkTransfer",
+        {
+          title: "Bulk Trasfer",
+          user: req.session.user,
+          dataNumber: getNumber.data.data,
+          dataHistoryBulk: getHisBulk.data.data.exchanges,
+          moment: moment,
+          alertnotif: req.session.alertnotif,
+        },
+        (req.session.alertnotif = undefined)
+      );
+    }
+  } catch (err) {
+    console.log(err);
+    res.redirect("/transfer_pulsa");
+  }
+});
+
+router.post("/req_bulk_transfer_pulsa", async function (req, res, next) {
+  try {
+    const token = req.session.token;
+
+    const reqPulsaBulk = await request.post(
+      "exchange/transfer",
+      token,
+      req.body
+    );
+
+    if (reqPulsaBulk.data.statusCode === 200) {
+      req.session.alertnotif = "success";
+      res.redirect("/dashboard");
+    }
+  } catch (err) {
+    console.log(err);
+    res.redirect("/transfer_pulsa");
+  }
+});
+
 module.exports = router;

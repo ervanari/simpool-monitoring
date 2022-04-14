@@ -2,84 +2,110 @@
 <%- include("../template/navside") -%>
 <%- include("../template/navbars") -%>
 
+<div class="row">
+    <div class="col-6 align-items-center">
+        <% if(alertnotif == "success" && alertnotif != "undefined") { %>
+        <script>
+            swal({
+                title: "Message",
+                text: "Success",
+                icon: "success",
+                timer: 2000,
+                buttons: false,
+            });
+        </script>
+        <% } %>
+    </div>
+</div>
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
             <div class="card my-4">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                        <h6 class="text-white text-capitalize ps-3">Inbox</h6>
+                        <h6 class="text-white text-capitalize ps-3">Bulk Transfer</h6>
                     </div>
                 </div>
-                <div class="card-body px-0 pb-2">
-                    <div class="table-responsive p-4">
-                        <table class="table align-items-center mb-0" id="tableinbox">
+                <div class="card-body px-4 py-2">
+                    <form action="/req_transfer_pulsa" method="POST">
+                        <div class="form-row align-items-end">
+                            <div class="col-4 my-1">
+                                <label class="mr-sm-2">Nomor Asal</label>
+                                <div class="custom-file">
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                    <input type="file" class="custom-file-input" id="customFile" name="filename">
+                                </div>
+                            </div>
+                            <div class="col-4 my-1">
+                                <label class="mr-sm-2">Nomor Agent</label>
+                                <div class="custom-file">
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                    <input type="file" class="custom-file-input" id="customFile" name="filename">
+                                </div>
+                            </div>
+                            <div class="col-4 my-1">
+                                <button type="submit" class="btn btn-primary mb-0">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-body px-4">
+                    <div class="table-responsive table-stre p-2">
+                        <table class="table table-striped align-items-center mb-0" id="tableHistoryBulkTransfer">
                             <thead>
                                 <tr>
                                     <th
                                         class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Time</th>
+                                        createdAt</th>
                                     <th
                                         class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Port</th>
                                     <th
                                         class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Message</th>
+                                        From Number</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        From Message</th>
+                                        To Number</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Destination Number</th>
+                                        Amount</th>
 
                                     <th class="text-secondary opacity-7"></th>
                                 </tr>
                             </thead>
                             <tbody class="text-truncate">
-                                <% for(let e in dataInbox) { %>
-
+                                <% for(let i in dataHistoryBulk) { %>
                                 <tr>
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0">
-                                            <%= moment(dataInbox[e].createdAt).format('LLL'); %>
+                                            <%= moment(dataHistoryBulk[i].createdAt).tz("Asia/Jakarta").format('MMMM Do YYYY, h:mm:ss A z'); %>
                                         </p>
                                     </td>
                                     <td>
                                         <p class="text-xs text-truncates font-weight-bold mb-0">
-                                            <%= dataInbox[e].device %>
+                                            <%= dataHistoryBulk[i].port %>
                                         </p>
                                     </td>
-                                    <td onclick="modalShow('popup_sms');smsMasuk('<%= dataInbox[e].message %>')">
+                                    <td>
                                         <p class="text-xs text-truncates font-weight-bold mb-0">
-                                            <%= dataInbox[e].message %>
+                                            <%= dataHistoryBulk[i].from %>
                                         </p>
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <p class="text-xs text-truncates font-weight-bold mb-0">
-                                            <%= dataInbox[e].from %>
+                                            <%= dataHistoryBulk[i].to %>
                                         </p>
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <p class="text-xs text-truncates font-weight-bold mb-0">
-                                            <%= dataInbox[e].to %>
+                                            <%= dataHistoryBulk[i].amount %>
                                         </p>
                                     </td>
-
                                     <td class="align-middle">
                                     </td>
                                 </tr>
-
-                                <!-- <tr class="explode hide">
-                                    <td colspan="6" style="background: #CCC; display: none;">
-                                        <p class="text-xs font-weight-bold mb-0">
-                                            <%# dataInbox[e].message %>
-                                        </p>
-                                    </td>
-                                </tr> -->
-
-
                                 <% } %>
-
                             </tbody>
                         </table>
                     </div>
@@ -90,24 +116,14 @@
 </div>
 
 <%- include('../template/footer') -%>
-<%- include("../modals/general_modals/modal_sms") -%>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        $('#tableinbox').DataTable();
+        $('#tableHistoryBulkTransfer').DataTable({
+            "order": [
+                [2, "desc"],
+                [0, "asc"]
+            ]
+        });
     });
-
-    // $(".exploder").click(function () {
-    //     $(this).toggleClass("btn-success btn-danger");
-
-    //     $(this).children("span").toggleClass("glyphicon-search glyphicon-zoom-out");
-
-    //     $(this).closest("tr").next("tr").toggleClass("hide");
-
-    //     if ($(this).closest("tr").next("tr").hasClass("hide")) {
-    //         $(this).closest("tr").next("tr").children("td").slideUp();
-    //     } else {
-    //         $(this).closest("tr").next("tr").children("td").slideDown(100);
-    //     }
-    // });
 </script>

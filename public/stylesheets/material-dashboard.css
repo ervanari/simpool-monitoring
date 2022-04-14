@@ -24844,3 +24844,53 @@ p {
   background-color: #34323d;
   opacity: 1;
 }
+
+/* slide manuat tf */
+/* .toggle {
+  position: relative;
+} */
+.toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.toggle .onoff {
+  color: #fff;
+  font-size: 10px;
+  text-align: center;
+  display: block;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.slider {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  background-color: #333;
+  transition: 0.4s;
+  width: 30px;
+  height: 15px;
+}
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 15px;
+  width: 30px;
+  background-color: #fff;
+  transition: 0.4s;
+  top: 10px;
+  left: 10px;
+}
+input:checked + .slider {
+  background-color: #fd5d00;
+  box-shadow: 0 0 12px #fd5d00;
+}
+input:checked + .slider:before {
+  transform: translateX(80px);
+}
+.slider.round {
+  border-radius: 20px;
+}
+.slider.round::before {
+  border-radius: 20px;
+}

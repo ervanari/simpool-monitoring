@@ -1,0 +1,167 @@
+<%- include('../template/header') -%>
+<%- include("../template/navside") -%>
+<%- include("../template/navbars") -%>
+
+<div class="row">
+    <div class="col-6 align-items-center">
+        <% if(alertnotif == "success" && alertnotif != "undefined") { %>
+        <script>
+            swal({
+                title: "Message",
+                text: "Success",
+                icon: "success",
+                timer: 2000,
+                buttons: false,
+            });
+        </script>
+        <% } %>
+    </div>
+</div>
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card my-4">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                        <h6 class="text-white text-capitalize ps-3">Single Transfer</h6>
+                    </div>
+                </div>
+                <div class="card-body px-4 py-2">
+                    <form action="/req_transfer_pulsa" method="POST">
+                        <div class="form-row align-items-end">
+                            <div class="col-3 my-1">
+                                <label class="mr-sm-2" for="inlineFormCustomSelect">Provider</label>
+                                <select class="custom-select mr-sm-2">
+                                    <option value="1">Telkomsel</option>
+                                    <option value="2">XL</option>
+                                    <option value="3">Indosat</option>
+                                </select>
+                            </div>
+                            <div class="col-3 my-1">
+                                <label class="mr-sm-2" for="inlineFormCustomSelect">Nomor Asal</label>
+                                <select class="custom-select mr-sm-2" name="port" id="inlineFormCustomSelect"
+                                    data-live-search="true">
+                                    <option selected>Choose...</option>
+                                    <% for(let i in dataNumber) {%>
+                                    <% for(let e in dataNumber[i].deviceData) {%>
+                                    <option value="<%= dataNumber[i].deviceData[e].port %>">
+                                        <%= dataNumber[i].number %>
+                                    </option>
+                                    <% } %>
+                                    <% } %>
+                                </select>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+
+                            </div>
+                            <div class="col-3 my-1">
+                                <label class="mr-sm-2" for="inlineFormCustomSelect">Nomor Agent</label>
+                                <input type="text" name="phone" placeholder="Input Nomor" id="noTujuan"
+                                    class="w-100 p-1 mr-sm-2 rounded border" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-3 my-1">
+                                <!-- <label class="mr-sm-2" for="inlineFormCustomSelect">Nominal</label> -->
+                                <!-- <label class="toggle">
+                                    <span class="onoff">OFF</span>
+                                    <input type="checkbox" />
+                                    <span class="slider round"></span>
+                                </label> -->
+                                <div class="switch">
+                                    <input type="checkbox" id="toggleAll" />
+                                    <label for="toggleAll"></label>
+                                </div>
+                                <input type="text" name="amount" placeholder="Input Nominal" id="noTujuan"
+                                    class="w-100 p-1 mr-sm-2 rounded border" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+
+                            </div>
+                            <div class="col-auto my-1">
+                                <button type="submit" class="btn btn-primary mb-0">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-body px-4">
+                    <div class="table-responsive table-stre p-2">
+                        <table class="table table-striped align-items-center mb-0" id="tableHistorySingleTransfer">
+                            <thead>
+                                <tr>
+                                    <th
+                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        createdAt</th>
+                                    <th
+                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Port</th>
+                                    <th
+                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        From Number</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        To Number</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Amount</th>
+
+                                    <th class="text-secondary opacity-7"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-truncate">
+                                <% for(let i in dataHistory) { %>
+                                <tr>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">
+                                            <%= moment(dataHistory[i].createdAt).tz("Asia/Jakarta").format('MMMM Do YYYY, h:mm:ss A z'); %>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs text-truncates font-weight-bold mb-0">
+                                            <%= dataHistory[i].port %>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs text-truncates font-weight-bold mb-0">
+                                            <%= dataHistory[i].from %>
+                                        </p>
+                                    </td>
+                                    <td class="align-middle text-center text-sm">
+                                        <p class="text-xs text-truncates font-weight-bold mb-0">
+                                            <%= dataHistory[i].to %>
+                                        </p>
+                                    </td>
+                                    <td class="align-middle text-center text-sm">
+                                        <p class="text-xs text-truncates font-weight-bold mb-0">
+                                            <%= dataHistory[i].amount %>
+                                        </p>
+                                    </td>
+                                    <td class="align-middle">
+                                    </td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../template/footer') -%>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        $('#tableHistorySingleTransfer').DataTable({
+            "order": [
+                [2, "desc"],
+                [0, "asc"]
+            ]
+        });
+    });
+</script>
