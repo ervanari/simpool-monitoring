@@ -41,7 +41,7 @@
                                 <tr>
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0">
-                                            <%= moment(dataInbox[e].time).format('MMMM Do YYYY, h:mm:ss A z'); %>
+                                            <%= moment(dataInbox[e].createdAt).format('LLL'); %>
                                         </p>
                                     </td>
                                     <td>
@@ -94,12 +94,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        $('#tableinbox').DataTable({
-            "order": [
-                [2, "desc"],
-                [0, "asc"]
-            ]
-        });
+        $('#tableinbox').DataTable();
     });
 
     // $(".exploder").click(function () {

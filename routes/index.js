@@ -385,16 +385,12 @@ router.get("/inbox", async function (req, res, next) {
 router.get("/transfer_pulsa", async function (req, res, next) {
   try {
     const token = req.session.token;
-
     const getNumber = await request.get("providers/all", token);
 
-    let header = {
-      api_key: "47d13777-186d-4dc5-b2c3-30f906c69e74",
-    };
-
-    const getMutation = await request.get("mutation", token, {
-      headers: header,
-    });
+    const getHisSingle = await request.get(
+      "exchange/history?limit=0&offset=0",
+      token
+    );
 
     if (getNumber) {
       res.render(
@@ -403,7 +399,7 @@ router.get("/transfer_pulsa", async function (req, res, next) {
           title: "Single Transfer",
           user: req.session.user,
           dataNumber: getNumber.data.data,
-          dataMutation: getMutation.data.data,
+          dataHistory: getHisSingle.data.data.exchanges,
           moment: moment,
           alertnotif: req.session.alertnotif,
         },
@@ -428,11 +424,9 @@ router.post("/req_transfer_pulsa", async function (req, res, next) {
 
     const reqPulsa = await request.post("exchange/transfer", token, sendData);
 
-    console.log("req.body ==>", reqPulsa);
-
     if (reqPulsa.data.statusCode === 200) {
       req.session.alertnotif = "success";
-      res.redirect("/dashboard");
+      res.redirect("/transfer_pulsa");
     }
   } catch (err) {
     console.log(err);
@@ -446,13 +440,10 @@ router.get("/bulk_transfer_pulsa", async function (req, res, next) {
 
     const getNumber = await request.get("providers/all", token);
 
-    let header = {
-      api_key: "47d13777-186d-4dc5-b2c3-30f906c69e74",
-    };
-
-    const getMutation = await request.get("mutation", token, {
-      headers: header,
-    });
+    const getHisBulk = await request.get(
+      "exchange/history?limit=0&offset=0",
+      token
+    );
 
     if (getNumber) {
       res.render(
@@ -461,7 +452,7 @@ router.get("/bulk_transfer_pulsa", async function (req, res, next) {
           title: "Bulk Trasfer",
           user: req.session.user,
           dataNumber: getNumber.data.data,
-          dataMutation: getMutation.data.data,
+          dataHistoryBulk: getHisBulk.data.data.exchanges,
           moment: moment,
           alertnotif: req.session.alertnotif,
         },
@@ -478,11 +469,13 @@ router.post("/req_bulk_transfer_pulsa", async function (req, res, next) {
   try {
     const token = req.session.token;
 
-    const reqPulsa = await request.post("exchange/transfer", token, req.body);
+    const reqPulsaBulk = await request.post(
+      "exchange/transfer",
+      token,
+      req.body
+    );
 
-    console.log("req.body ==>", reqPulsa);
-
-    if (dataRenew.data.statusCode === 200) {
+    if (reqPulsaBulk.data.statusCode === 200) {
       req.session.alertnotif = "success";
       res.redirect("/dashboard");
     }

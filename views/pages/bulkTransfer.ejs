@@ -23,21 +23,24 @@
             <div class="card my-4">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                        <h6 class="text-white text-capitalize ps-3">Transfer Pulsa</h6>
+                        <h6 class="text-white text-capitalize ps-3">Bulk Transfer</h6>
                     </div>
                 </div>
                 <div class="card-body px-4 py-2">
                     <form action="/req_transfer_pulsa" method="POST">
                         <div class="form-row align-items-end">
                             <div class="col-4 my-1">
-                                <label class="mr-sm-2" for="inlineFormCustomSelect">Provider</label>
-                                <input type="file" class="form-control" id="customFile" />
+                                <label class="mr-sm-2">Nomor Asal</label>
+                                <div class="custom-file">
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                    <input type="file" class="custom-file-input" id="customFile" name="filename">
+                                </div>
                             </div>
                             <div class="col-4 my-1">
-                                <label class="mr-sm-2" for="inlineFormCustomSelect">Nomor Asal</label>
-                                <input type="file" class="form-control" id="customFile" />
-                                <div class="valid-feedback">
-                                    Looks good!
+                                <label class="mr-sm-2">Nomor Agent</label>
+                                <div class="custom-file">
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                    <input type="file" class="custom-file-input" id="customFile" name="filename">
                                 </div>
                             </div>
                             <div class="col-4 my-1">
@@ -49,7 +52,7 @@
 
                 <div class="card-body px-4">
                     <div class="table-responsive table-stre p-2">
-                        <table class="table table-striped align-items-center mb-0" id="tableHistoryTransfer">
+                        <table class="table table-striped align-items-center mb-0" id="tableHistoryBulkTransfer">
                             <thead>
                                 <tr>
                                     <th
@@ -57,33 +60,46 @@
                                         createdAt</th>
                                     <th
                                         class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Port</th>
+                                    <th
+                                        class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         From Number</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         To Number</th>
-                                    <!-- <th
+                                    <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Amount</th> -->
+                                        Amount</th>
 
                                     <th class="text-secondary opacity-7"></th>
                                 </tr>
                             </thead>
                             <tbody class="text-truncate">
-                                <% for(let i in dataMutation) { %>
+                                <% for(let i in dataHistoryBulk) { %>
                                 <tr>
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0">
-                                            <%= moment(dataMutation[i].createdAt).tz("Asia/Jakarta").format('MMMM Do YYYY, h:mm:ss A z'); %>
+                                            <%= moment(dataHistoryBulk[i].createdAt).tz("Asia/Jakarta").format('MMMM Do YYYY, h:mm:ss A z'); %>
                                         </p>
                                     </td>
                                     <td>
                                         <p class="text-xs text-truncates font-weight-bold mb-0">
-                                            <%= dataMutation[i].number %>
+                                            <%= dataHistoryBulk[i].port %>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs text-truncates font-weight-bold mb-0">
+                                            <%= dataHistoryBulk[i].from %>
                                         </p>
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <p class="text-xs text-truncates font-weight-bold mb-0">
-                                            <%= dataMutation[i].balance %>
+                                            <%= dataHistoryBulk[i].to %>
+                                        </p>
+                                    </td>
+                                    <td class="align-middle text-center text-sm">
+                                        <p class="text-xs text-truncates font-weight-bold mb-0">
+                                            <%= dataHistoryBulk[i].amount %>
                                         </p>
                                     </td>
                                     <td class="align-middle">
@@ -103,7 +119,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        $('#tableHistoryTransfer').DataTable({
+        $('#tableHistoryBulkTransfer').DataTable({
             "order": [
                 [2, "desc"],
                 [0, "asc"]

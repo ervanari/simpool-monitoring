@@ -87,7 +87,7 @@ const smsMasuk = (data) => {
 };
 
 const getPulsa = (pulsa) => {
-  console.log(pulsa);
+  // console.log(document.getElementById("inlineFormCustomSelect").value);
 };
 
 window.addEventListener("DOMContentLoaded", (event) => {

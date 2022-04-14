@@ -24846,9 +24846,9 @@ p {
 }
 
 /* slide manuat tf */
-.toggle {
+/* .toggle {
   position: relative;
-}
+} */
 .toggle input {
   position: absolute;
   opacity: 0;
