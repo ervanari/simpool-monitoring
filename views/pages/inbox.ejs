@@ -13,7 +13,7 @@
                 </div>
                 <div class="card-body px-0 pb-2">
                     <div class="table-responsive p-4">
-                        <table class="table align-items-center mb-0" id="tableinbox">
+                        <table class="table align-items-center mb-0" id="tableinboxs">
                             <thead>
                                 <tr>
                                     <th
@@ -37,49 +37,37 @@
                             </thead>
                             <tbody class="text-truncate">
                                 <% for(let e in dataInbox) { %>
-
                                 <tr>
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0">
-                                            <%= moment(dataInbox[e].createdAt).format('LLL'); %>
+                                            <%= dataInbox[e].createat %>
                                         </p>
                                     </td>
                                     <td>
                                         <p class="text-xs text-truncates font-weight-bold mb-0">
-                                            <%= dataInbox[e].device %>
+                                            <%= dataInbox[e].ports %>
                                         </p>
                                     </td>
-                                    <td onclick="modalShow('popup_sms');smsMasuk('<%= dataInbox[e].message %>')">
+                                    <td onclick="modalShow('popup_sms');smsMasuk('<%= dataInbox[e].pesan %>')">
                                         <p class="text-xs text-truncates font-weight-bold mb-0">
-                                            <%= dataInbox[e].message %>
-                                        </p>
-                                    </td>
-                                    <td class="align-middle text-center text-sm">
-                                        <p class="text-xs text-truncates font-weight-bold mb-0">
-                                            <%= dataInbox[e].from %>
+                                            <%= dataInbox[e].pesan %>
                                         </p>
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <p class="text-xs text-truncates font-weight-bold mb-0">
-                                            <%= dataInbox[e].to %>
+                                            <%= dataInbox[e].frompesan %>
+                                        </p>
+                                    </td>
+                                    <td class="align-middle text-center text-sm">
+                                        <p class="text-xs text-truncates font-weight-bold mb-0">
+                                            <%= dataInbox[e].notujuan %>
                                         </p>
                                     </td>
 
                                     <td class="align-middle">
                                     </td>
                                 </tr>
-
-                                <!-- <tr class="explode hide">
-                                    <td colspan="6" style="background: #CCC; display: none;">
-                                        <p class="text-xs font-weight-bold mb-0">
-                                            <%# dataInbox[e].message %>
-                                        </p>
-                                    </td>
-                                </tr> -->
-
-
                                 <% } %>
-
                             </tbody>
                         </table>
                     </div>
@@ -94,20 +82,20 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        $('#tableinbox').DataTable();
+        $('#tableinboxs').DataTable({
+            "ordering": false,
+            dom: 'Bfrtip',
+            buttons: [{
+                extend: 'collection',
+                text: 'Export',
+                buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    'pdf',
+                    'print'
+                ]
+            }]
+        });
     });
-
-    // $(".exploder").click(function () {
-    //     $(this).toggleClass("btn-success btn-danger");
-
-    //     $(this).children("span").toggleClass("glyphicon-search glyphicon-zoom-out");
-
-    //     $(this).closest("tr").next("tr").toggleClass("hide");
-
-    //     if ($(this).closest("tr").next("tr").hasClass("hide")) {
-    //         $(this).closest("tr").next("tr").children("td").slideUp();
-    //     } else {
-    //         $(this).closest("tr").next("tr").children("td").slideDown(100);
-    //     }
-    // });
 </script>

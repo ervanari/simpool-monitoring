@@ -117,7 +117,7 @@
                                 <tr>
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0">
-                                            <%= moment(dataHistory[i].createdAt).tz("Asia/Jakarta").format('MMMM Do YYYY, h:mm:ss A z'); %>
+                                            <%= moment(dataHistory[i].createdAt).format('MMMM Do YYYY, h:mm:ss A z'); %>
                                         </p>
                                     </td>
                                     <td>
@@ -157,11 +157,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        $('#tableHistorySingleTransfer').DataTable({
-            "order": [
-                [2, "desc"],
-                [0, "asc"]
-            ]
-        });
+        $('#tableHistorySingleTransfer').DataTable({});
     });
 </script>
