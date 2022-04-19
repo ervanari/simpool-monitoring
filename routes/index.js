@@ -398,11 +398,10 @@ router.get("/inbox", async function (req, res, next) {
     const getInbox = await request.get("sms?limit=0&offset=0", token);
 
     const ibx = getInbox.data.data.sms;
-    let asd = ibx.reverse();
     let dataAllInbox = [];
 
-    for (let i in asd) {
-      let datetime = asd[i].createdAt;
+    for (let i in ibx) {
+      let datetime = ibx[i].createdAt;
       let mutdate = new Date(datetime);
       const asiaDate = mutdate.toLocaleString("id", {
         weekday: "short",
@@ -417,10 +416,10 @@ router.get("/inbox", async function (req, res, next) {
       });
       dataAllInbox.push({
         createat: asiaDate,
-        ports: asd[i].device,
-        pesan: asd[i].message,
-        frompesan: asd[i].from,
-        notujuan: asd[i].to,
+        ports: ibx[i].device,
+        pesan: ibx[i].message,
+        frompesan: ibx[i].from,
+        notujuan: ibx[i].to,
       });
     }
 
