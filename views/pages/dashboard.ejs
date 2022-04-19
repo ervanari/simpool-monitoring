@@ -401,9 +401,18 @@
 			"order": [
 				[3, "asc"]
 			],
-			"buttons": [
-				'copy', 'csv', 'excel', 'pdf', 'print'
-			]
+			dom: 'Bfrtip',
+			buttons: [{
+				extend: 'collection',
+				text: 'Export',
+				buttons: [
+					'copy',
+					'excel',
+					'csv',
+					'pdf',
+					'print'
+				]
+			}]
 		});
 	});
 </script>

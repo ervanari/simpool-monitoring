@@ -343,16 +343,45 @@ router.get("/mutationpay", async function (req, res, next) {
     let header = {
       api_key: "47d13777-186d-4dc5-b2c3-30f906c69e74",
     };
-
     const getMutation = await request.get("mutation", token, {
       headers: header,
     });
+
+    const mutate = getMutation.data.data;
+    let mutasi = mutate.reverse();
+    let dataAllMutations = [];
+
+    // mutasi.sort(function (a, b) {
+    //   return b - a;
+    // });
+
+    for (let i in mutasi) {
+      let datetime = mutasi[i].createdAt;
+      let mutdate = new Date(datetime);
+      const asiaDate = mutdate.toLocaleString("id", {
+        weekday: "short",
+        month: "short",
+        year: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        timeZone: "Asia/Jakarta",
+        timeZoneName: "short",
+      });
+
+      dataAllMutations.push({
+        createdAt: asiaDate,
+        balance: mutasi[i].balance,
+        number: mutasi[i].number,
+      });
+    }
 
     if (getMutation) {
       res.render("pages/mutations", {
         title: "Mutation",
         user: req.session.user,
-        dataMutation: getMutation.data.data,
+        dataMutation: dataAllMutations,
         moment: moment,
       });
     }
@@ -368,11 +397,38 @@ router.get("/inbox", async function (req, res, next) {
 
     const getInbox = await request.get("sms?limit=0&offset=0", token);
 
+    const ibx = getInbox.data.data.sms;
+    let asd = ibx.reverse();
+    let dataAllInbox = [];
+
+    for (let i in asd) {
+      let datetime = asd[i].createdAt;
+      let mutdate = new Date(datetime);
+      const asiaDate = mutdate.toLocaleString("id", {
+        weekday: "short",
+        month: "short",
+        year: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        timeZone: "Asia/Jakarta",
+        timeZoneName: "short",
+      });
+      dataAllInbox.push({
+        createat: asiaDate,
+        ports: asd[i].device,
+        pesan: asd[i].message,
+        frompesan: asd[i].from,
+        notujuan: asd[i].to,
+      });
+    }
+
     if (getInbox) {
       res.render("pages/inbox", {
         title: "Inbox",
         user: req.session.user,
-        dataInbox: getInbox.data.data.sms,
+        dataInbox: dataAllInbox,
         moment: moment,
       });
     }

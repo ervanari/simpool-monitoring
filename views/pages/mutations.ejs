@@ -13,7 +13,7 @@
 				</div>
 				<div class="card-body px-0 pb-2">
 					<div class="table-responsive p-4">
-						<table class="table align-items-center mb-0" id="tableMutation">
+						<table class="table align-items-center mb-0" id="tableMutations">
 							<thead>
 
 								<tr>
@@ -34,7 +34,7 @@
 								<tr>
 									<td>
 										<p class="text-xs font-weight-bold mb-0">
-											<%= moment(dataMutation[i].createdAt).tz("Asia/Jakarta").format('MMMM Do YYYY, h:mm:ss A z'); %>
+											<%= dataMutation[i].createdAt %>
 										</p>
 									</td>
 									<td>
@@ -64,10 +64,20 @@
 
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
-		$('#tableMutation').DataTable({
-			"order": [
-				[0, "asc"]
-			]
+		$('#tableMutations').DataTable({
+			"ordering": false,
+			dom: 'Bfrtip',
+			buttons: [{
+				extend: 'collection',
+				text: 'Export',
+				buttons: [
+					'copy',
+					'excel',
+					'csv',
+					'pdf',
+					'print'
+				]
+			}]
 		});
 	});
 </script>
