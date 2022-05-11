@@ -62,8 +62,7 @@ router.get("/dashboard", async function (req, res, next) {
       } else {
         sendDataExp = "Unconnected";
       }
-      //   console.log("<<<==== coundDeveice ====>>>", sendDataExp);
-
+      let providerCard = val.server.split(":");
       allData.push({
         _id: val._id,
         isActive: val.isActive,
@@ -75,6 +74,8 @@ router.get("/dashboard", async function (req, res, next) {
         simExp: sendDataExp,
       });
     });
+
+    console.log(allData);
 
     if (dashboardData) {
       res.render(
@@ -88,7 +89,7 @@ router.get("/dashboard", async function (req, res, next) {
           active: portActive.length,
           off: portOff.length,
           booked: portBooked.length,
-          idle: portIdle.length,
+          idle: portIdle.length - portOff.length - portTimeout.length,
           alertnotif: req.session.alertnotif,
           timeout: portTimeout.length,
         },
@@ -194,7 +195,7 @@ router.post("/search_data", async function (req, res, next) {
     let finds = dashboardData.data.data.devices;
     let coundDeveice = dashboardData.data.data.devices;
     let sendDataExp = {};
-    const allData = [];
+    const newList = [];
 
     let portActive = coundDeveice.filter((val) => {
       return val.isActive == true;
@@ -211,14 +212,11 @@ router.post("/search_data", async function (req, res, next) {
     let portTimeout = coundDeveice.filter((val) => {
       return val.simNumber == undefined;
     });
-    let portSuccess = getPulsa.data.data.filter((val) => {
-      return val.number;
-    });
     sendData.sort(function (a, b) {
       return a.port.localeCompare(b.port);
     });
 
-    coundDeveice.forEach((val, idx) => {
+    finds.forEach((val, idx) => {
       if (val.dial_message) {
         if (val.dial_message.match(/\d{2}([\/.-])\d{2}\1\d{4}/g) != null) {
           sendDataExp = val.dial_message.match(/\d{2}([\/.-])\d{2}\1\d{4}/g);
@@ -228,28 +226,36 @@ router.post("/search_data", async function (req, res, next) {
       } else {
         sendDataExp = "Unconnected";
       }
-      //   console.log("<<<==== coundDeveice ====>>>", sendDataExp);
 
-      allData.push({
-        _id: val._id,
-        isActive: val.isActive,
-        simNumber: val.simNumber,
-        isBooked: val.isBooked,
-        port: val.port,
-        dial_message: val.dial_message,
-        deviceKey: val.deviceKey,
-        simExp: sendDataExp,
-      });
-    });
-
-    let newList = [];
-    for (let i in finds) {
-      let dataNumber = String(finds[i].simNumber).includes(req.body.elSearch);
-      let dataPort = String(finds[i].port).includes(req.body.elSearch);
-      if (dataNumber == true || dataPort == true) {
-        newList.push(finds[i]);
+      let providerCard = val.server.split(":");
+      let dataNumber = String(val.server).includes(req.body.eldata);
+      if (dataNumber == true) {
+        newList.push({
+          _id: val._id,
+          isActive: val.isActive,
+          simNumber: val.simNumber,
+          isBooked: val.isBooked,
+          port: val.port,
+          dial_message: val.dial_message,
+          deviceKey: val.deviceKey,
+          simExp: sendDataExp,
+          provider: providerCard[1],
+        });
       }
-    }
+      if (req.body.eldata == "all") {
+        newList.push({
+          _id: val._id,
+          isActive: val.isActive,
+          simNumber: val.simNumber,
+          isBooked: val.isBooked,
+          port: val.port,
+          dial_message: val.dial_message,
+          deviceKey: val.deviceKey,
+          simExp: sendDataExp,
+          provider: providerCard[1],
+        });
+      }
+    });
 
     if (dashboardData) {
       res.render(
@@ -263,7 +269,7 @@ router.post("/search_data", async function (req, res, next) {
           active: portActive.length,
           off: portOff.length,
           booked: portBooked.length,
-          idle: portIdle.length,
+          idle: portIdle.length - portOff.length - portTimeout.length,
           timeout: portTimeout.length,
           alertnotif: req.session.alertnotif,
         },
@@ -477,7 +483,8 @@ router.post("/req_transfer_pulsa", async function (req, res, next) {
       amount: parseInt(req.body.amount),
     };
 
-    const reqPulsa = await request.post("exchange/transfer", token, sendData);
+    console.log(sendData);
+    // const reqPulsa = await request.post("exchange/transfer", token, sendData);
 
     if (reqPulsa.data.statusCode === 200) {
       req.session.alertnotif = "success";

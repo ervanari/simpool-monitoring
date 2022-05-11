@@ -34,9 +34,18 @@ const renew_pulsa = (port) => {
 };
 
 const onSearch = (e) => {
-  // console.log(e.target.value);
   let elData = document.getElementById("elSearch");
-  elData.value = e.target.value;
+  elData.value = e.value;
+  // $.ajax({
+  //   type: "post",
+  //   url: "/search_data",
+  //   data: {
+  //     eldata: e.value,
+  //   },
+  //   success: function (data) {
+  //     window.location.href = "/search_data";
+  //   },
+  // });
 };
 
 const cek_pulsa = (port) => {
@@ -61,7 +70,6 @@ const cek_pulsa = (port) => {
 const actServices = (datakey, datastatus) => {
   let serviceKey = document.getElementById("key_service");
   serviceKey.value = datakey;
-
   onchangeOption(datakey, datastatus);
 };
 
