@@ -178,7 +178,7 @@
 
 							<% for(let j in dataPulsa) { %>
 							<% if(dataDashboard[i].port != null || dataDashboard[i].port != undefined){ %>
-							<% if(dataDashboard[i].port == dataPulsa[j].deviceData[0].port){ %>
+							<% if(dataDashboard[i].simNumber == dataPulsa[j].number){ %>
 							<% if(dataPulsa[j].pulsa == undefined){ %>
 
 							<div class="d-flex justify-content-center">
@@ -339,7 +339,7 @@
 
 												<% for(let j in dataPulsa) { %>
 												<% if(dataDashboard[i].port != null || dataDashboard[i].port != undefined){ %>
-												<% if(dataDashboard[i].port === dataPulsa[j].deviceData[0].port){ %>
+												<% if(dataDashboard[i].simNumber == dataPulsa[j].number){ %>
 												<% if(dataPulsa[j].pulsa === undefined){ %>
 												<p class="text-xs font-weight-bold mb-0">
 													IDR 0
