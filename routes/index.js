@@ -43,7 +43,7 @@ router.get("/dashboard", async function (req, res, next) {
       return val.isBooked == false;
     });
     let portTimeout = coundDeveice.filter((val) => {
-      return val.simNumber == undefined;
+      return val.simNumber == undefined || val.simNumber == "";
     });
     let portSuccess = getPulsa.data.data.filter((val) => {
       return val.number;
@@ -74,8 +74,6 @@ router.get("/dashboard", async function (req, res, next) {
         simExp: sendDataExp,
       });
     });
-
-    console.log(allData);
 
     if (dashboardData) {
       res.render(
