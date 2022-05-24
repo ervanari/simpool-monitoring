@@ -479,10 +479,11 @@ router.post("/req_transfer_pulsa", async function (req, res, next) {
       port: req.body.port,
       phone: req.body.phone,
       amount: parseInt(req.body.amount),
+      provider: req.body.provider,
     };
 
-    console.log(sendData);
-    // const reqPulsa = await request.post("exchange/transfer", token, sendData);
+    const reqPulsa = await request.post("exchange/transfer", token, sendData);
+    // console.log(reqPulsa);
 
     if (reqPulsa.data.statusCode === 200) {
       req.session.alertnotif = "success";

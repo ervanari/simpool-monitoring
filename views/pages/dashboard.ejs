@@ -67,7 +67,7 @@
 							</p>
 							<select class="custom-select mr-sm-1 text-sm" onchange="onSearch(this)" id="elSearch"
 								name="eldata" data-live-search="true">
-								<option selected>Choose..</option>
+								<option value="null" selected>Choose..</option>
 								<option value="all">All</option>
 								<option value="xl">
 									XL
@@ -76,7 +76,8 @@
 									Telkomsel
 								</option>
 							</select>
-							<input type='submit' class="btn bg-gradient-primary mb-0 p-1">
+							<input type='submit' id="btnSortCard" class="btn bg-gradient-primary mb-0 p-1"
+								style="display: none;">
 						</form>
 					</div>
 				</div>
@@ -427,6 +428,6 @@
 		});
 
 	});
-	var data = '<%=(dataDashboard)%>'
+	// var data = '<%#(dataDashboard)%>'
 	// console.log(data)
 </script>
