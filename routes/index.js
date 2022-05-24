@@ -483,7 +483,7 @@ router.post("/req_transfer_pulsa", async function (req, res, next) {
     };
 
     const reqPulsa = await request.post("exchange/transfer", token, sendData);
-    console.log(reqPulsa);
+    // console.log(reqPulsa);
 
     if (reqPulsa.data.statusCode === 200) {
       req.session.alertnotif = "success";

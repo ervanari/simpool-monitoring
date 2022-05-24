@@ -35,7 +35,15 @@ const renew_pulsa = (port) => {
 
 const onSearch = (e) => {
   let elData = document.getElementById("elSearch");
+  let elSortCard = document.getElementById("btnSortCard");
   elData.value = e.value;
+
+  if (elData.value != "null") {
+    elSortCard.style.display = "block";
+  } else {
+    elSortCard.style.display = "none";
+  }
+
   // $.ajax({
   //   type: "post",
   //   url: "/search_data",
