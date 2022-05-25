@@ -48,7 +48,7 @@ router.post("/update", async function (req, res, next) {
     }
   } catch (err) {
     console.log(err);
-    res.redirect("/post");
+    res.redirect("/dashboard");
   }
 });
 

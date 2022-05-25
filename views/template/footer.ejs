@@ -4,5 +4,14 @@
 
 	<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
 	<script src="/javascripts/material-dashboard.min.js?v=3.0.0"></script>
+	<script>
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.register('service-workers.js')
+				.then(() => {
+					console.log("Service Worker Registered !")
+				})
+		}
+	</script>
 	</body>
-</html>
+
+	</html>
