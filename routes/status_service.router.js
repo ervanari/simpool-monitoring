@@ -58,7 +58,9 @@ router.post("/control_service", async function (req, res, next) {
     }).then(function (res) {
       if (res.status == 200) {
         reqs.session.alertnotif = "success";
-        rest.redirect("/service/status_services");
+        rest.redirect("/service");
+      } else {
+        rest.redirect("/service");
       }
     });
   } catch (err) {
