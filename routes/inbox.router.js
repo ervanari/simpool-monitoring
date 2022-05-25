@@ -9,23 +9,13 @@ router.get("/", async function (req, res, next) {
   try {
     const token = req.session.token;
 
-    let header = {
-      api_key: "47d13777-186d-4dc5-b2c3-30f906c69e74",
-    };
-    const getMutation = await request.get("mutation", token, {
-      headers: header,
-    });
+    const getInbox = await request.get("sms?limit=0&offset=0", token);
 
-    const mutate = getMutation.data.data;
-    let mutasi = mutate.reverse();
-    let dataAllMutations = [];
+    const ibx = getInbox.data.data.sms;
+    let dataAllInbox = [];
 
-    // mutasi.sort(function (a, b) {
-    //   return b - a;
-    // });
-
-    for (let i in mutasi) {
-      let datetime = mutasi[i].createdAt;
+    for (let i in ibx) {
+      let datetime = ibx[i].createdAt;
       let mutdate = new Date(datetime);
       const asiaDate = mutdate.toLocaleString("id", {
         weekday: "short",
@@ -38,19 +28,20 @@ router.get("/", async function (req, res, next) {
         timeZone: "Asia/Jakarta",
         timeZoneName: "short",
       });
-
-      dataAllMutations.push({
-        createdAt: asiaDate,
-        balance: mutasi[i].balance,
-        number: mutasi[i].number,
+      dataAllInbox.push({
+        createat: asiaDate,
+        ports: ibx[i].device,
+        pesan: ibx[i].message,
+        frompesan: ibx[i].from,
+        notujuan: ibx[i].to,
       });
     }
 
-    if (getMutation) {
-      res.render("pages/mutations", {
-        title: "Mutation",
+    if (getInbox) {
+      res.render("pages/inbox", {
+        title: "Inbox",
         user: req.session.user,
-        dataMutation: dataAllMutations,
+        dataInbox: dataAllInbox,
         moment: moment,
       });
     }

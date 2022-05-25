@@ -25,7 +25,7 @@
 				<% if(user.role == "admin" || user.role == "superAdmin") { %>
 				<li class="nav-item">
 					<a class="nav-link text-white <%= title == "Status_Service" ? "active bg-gradient-primary" : ""%>"
-						href="/status_services">
+						href="/service">
 						<div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
 							<i class="material-icons opacity-10">dashboard</i>
 						</div>
@@ -36,7 +36,7 @@
 
 				<li class="nav-item">
 					<a class="nav-link text-white <%= title == "Mutation" ? "active bg-gradient-primary" : ""%>"
-						href="/mutationpay">
+						href="/mutation">
 						<div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
 							<i class="material-icons opacity-10">dashboard</i>
 						</div>
@@ -67,7 +67,7 @@
 						<ul class="flex-column nav pl-4">
 							<li class="nav-item">
 								<a class="nav-link text-white <%= title == "Single Transfer" ? "active bg-gradient-primary" : ""%>"
-									href="/transfer_pulsa">
+									href="/single-transfer">
 									<div
 										class="text-white text-center me-2 d-flex align-items-center justify-content-center">
 										<i class="material-icons opacity-10">dashboard</i>
