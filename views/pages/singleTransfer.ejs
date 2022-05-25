@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div class="card-body px-4 py-2">
-                    <form action="/req_transfer_pulsa" method="POST">
+                    <form action="/single-transfer/out" method="POST">
                         <div class="form-row align-items-end">
                             <div class="col-3 my-1">
                                 <label class="mr-sm-2" for="inlineFormCustomSelect">Nomor Asal</label>
@@ -153,6 +153,20 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        $('#tableHistorySingleTransfer').DataTable({});
+        $('#tableHistorySingleTransfer').DataTable({
+            "ordering": false,
+            dom: 'Bfrtip',
+            buttons: [{
+                extend: 'collection',
+                text: 'Export',
+                buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    'pdf',
+                    'print'
+                ]
+            }]
+        });
     });
 </script>
