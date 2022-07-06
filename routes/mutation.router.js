@@ -12,9 +12,8 @@ router.get("/", async function (req, res, next) {
     let header = {
       api_key: "47d13777-186d-4dc5-b2c3-30f906c69e74",
     };
-    const getMutation = await request.get("mutation", token, {
-      headers: header,
-    });
+    const getMutation = await request.get("mutation?limit=0&offset=0", token);
+
 
     const mutate = getMutation.data.data;
     let mutasi = mutate.reverse();

@@ -58,7 +58,7 @@ const onSearch = (e) => {
 
 const cek_pulsa = (port) => {
   localStorage.setItem("port", port);
-  let socket = io("https://qz-pulsa.intama.online");
+  const socket = io("https://qz-pulsa.intama.online");
 
   let type = document.getElementById("type");
   let ports = document.getElementById("port_pulsa");
@@ -107,9 +107,12 @@ const getPulsa = (pulsa) => {
 };
 
 window.addEventListener("DOMContentLoaded", (event) => {
-  document.getElementById("list").style.display = "none";
+  let list = document.getElementById("list");
+  if (list != null) {
+    document.getElementById("list").style.display = "none";
+  }
 
-  var socket = io("https://qz-pulsa.intama.online");
+  const socket = io("https://qz-pulsa.intama.online");
   socket.on("connect", function () {
     console.info("Socket connect");
   });
