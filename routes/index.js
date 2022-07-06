@@ -24,7 +24,7 @@ router.get("/dashboard", async function (req, res, next) {
     const token = req.session.token;
     const dashboardData = await request.get("devices?limit=0&offset=0", token);
     const getPulsa = await request.get("providers/all", token);
-    const getMutation = await request.get("mutation", token);
+    const getMutation = await request.get("mutation?limit=0&offset=0", token);
     let sendData = dashboardData.data.data.devices;
     let coundDeveice = dashboardData.data.data.devices;
     let sendDataExp = {};
