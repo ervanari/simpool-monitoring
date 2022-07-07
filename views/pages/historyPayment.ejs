@@ -1,0 +1,222 @@
+<%- include('../template/header') -%>
+<%- include("../template/navside") -%>
+<%- include("../template/navbars") -%>
+
+<div class="container-fluid pt-3 pb-0 px-4">
+    <input type="checkbox" id="switchpayment">
+    <div class="app">
+        <div class="content">
+            <label class="labels" for="switchpayment" onclick="switchdisplayHistory(this)">
+                <div class="toggle"></div>
+                <div class="names">
+                    <div class="light d-flex flex-row">
+                        <i class="material-icons">view_comfy</i>
+                        <span class="px-1">
+                            Payment
+                        </span>
+                    </div>
+                    <div class="dark d-flex flex-row">
+                        <i class="material-icons">view_headline</i>
+                        <span class="px-1">
+                            Invoice
+                        </span>
+                    </div>
+                </div>
+            </label>
+        </div>
+    </div>
+</div>
+
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="payment" role="tabpanel" aria-labelledby="list-home-list">
+        <div class="container-fluid px-4 pt-0">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card my-4">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                                <h6 class="text-white text-capitalize ps-3">Payment</h6>
+                            </div>
+                        </div>
+
+                        <div class="card-body px-0 pb-2">
+                            <div class="table-responsive p-4">
+                                <table class="table align-items-center mb-0" id="tablelistPayment">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-uppercase text-center text-secondary text-xxs
+                                                font-weight-bolder opacity-7 ps-2">
+                                                Time</th>
+                                            <th class="text-uppercase text-center text-secondary text-xxs
+                                                font-weight-bolder opacity-7">
+                                                Device</th>
+                                            <th class="text-uppercase text-center text-secondary text-xxs
+                                                font-weight-bolder opacity-7 ps-2 w-10">
+                                                Reference</th>
+                                            <th class="text-uppercase text-center text-secondary text-xxs
+                                                font-weight-bolder opacity-7">
+                                                Amount</th>
+                                            <th class="text-uppercase text-center text-secondary text-xxs
+                                                font-weight-bolder opacity-7">
+                                                Claimed</th>
+                                            <th class="text-secondary opacity-7"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-truncate">
+                                        <% for(let i in dataPayment) { %>
+                                        <tr>
+                                            <td>
+                                                <p class="text-xs text-center font-weight-bold mb-0">
+                                                    <%= moment(dataPayment[i].time).format('MMMM Do YYYY, h:mm:ss A z'); %>
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs text-center text-truncates font-weight-bold mb-0">
+                                                    <%= dataPayment[i].device %>
+                                                </p>
+                                            </td>
+                                            <td class="align-middle text-center text-sm">
+                                                <p class="text-xs text-truncates font-weight-bold mb-0">
+                                                    <%= dataPayment[i].reference %>
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs text-center text-truncates font-weight-bold mb-0">
+                                                    <%= dataPayment[i].amount %>
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs text-center text-truncates font-weight-bold mb-0">
+                                                    <%= dataPayment[i].claimed %>
+                                                </p>
+                                            </td>
+                                            <td class="align-middle">
+                                            </td>
+                                        </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="invoice" role="tabpanel" aria-labelledby="list-home-list">
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card my-4">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                                <h6 class="text-white text-capitalize ps-3">Invoice</h6>
+                            </div>
+                        </div>
+
+                        <div class="card-body px-0 pb-2">
+                            <div class="table-responsive p-4">
+                                <table class="table align-items-center mb-0" id="tablelistInvoice">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Time</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Ticket</th>
+                                            <th class="text-uppercase text-center text-secondary text-xxs
+                                                font-weight-bolder opacity-7 ps-2 w-10">
+                                                Phone Receiver</th>
+                                            <th class="text-uppercase text-center text-secondary text-xxs
+                                                font-weight-bolder opacity-7 ps-2 w-10">
+                                                Amount</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Status</th>
+                                            <th class="text-secondary opacity-7"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-truncate">
+                                        <% for(let i in dataInvoice) { %>
+                                        <tr>
+                                            <td>
+                                                <p class="text-xs text-center font-weight-bold mb-0">
+                                                    <%= moment(dataInvoice[i].createdAt).format('MMMM Do YYYY, h:mm:ss A z'); %>
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs text-center text-truncates font-weight-bold mb-0">
+                                                    <%= dataInvoice[i].ticket %>
+                                                </p>
+                                            </td>
+                                            <td class="align-middle text-center text-sm">
+                                                <p class="text-xs text-truncates font-weight-bold mb-0">
+                                                    <%= dataInvoice[i].phoneReceiver %>
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs text-center text-truncates font-weight-bold mb-0">
+                                                    <%= dataInvoice[i].amount %>
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs text-truncates font-weight-bold mb-0">
+                                                    <%= dataInvoice[i].status %>
+                                                </p>
+                                            </td>
+                                            <td class="align-middle">
+                                            </td>
+                                        </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<%- include('../template/footer') -%>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        $('#tablelistPayment').DataTable({
+            "ordering": false,
+            dom: 'Bfrtip',
+            buttons: [{
+                extend: 'collection',
+                text: 'Export',
+                buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    'pdf',
+                    'print'
+                ]
+            }],
+        });
+        $('#tablelistInvoice').DataTable({
+            "ordering": false,
+            dom: 'Bfrtip',
+            buttons: [{
+                extend: 'collection',
+                text: 'Export',
+                buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    'pdf',
+                    'print'
+                ]
+            }],
+        });
+    });
+</script>
