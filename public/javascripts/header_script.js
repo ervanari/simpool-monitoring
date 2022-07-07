@@ -89,11 +89,23 @@ const onchangeOption = (datakey, datastatus) => {
 
 const switchdisplay = (param) => {
   if (document.getElementById("switch").checked) {
+    console.log("cheked")
     document.getElementById("grid").style.display = "block";
     document.getElementById("list").style.display = "none";
   } else {
+    console.log("false")
     document.getElementById("grid").style.display = "none";
     document.getElementById("list").style.display = "block";
+  }
+};
+
+const switchdisplayHistory = (param) => {
+  if (document.getElementById("switchpayment").checked) {
+    document.getElementById("payment").style.display = "block";
+    document.getElementById("invoice").style.display = "none";
+  } else {
+    document.getElementById("payment").style.display = "none";
+    document.getElementById("invoice").style.display = "block";
   }
 };
 

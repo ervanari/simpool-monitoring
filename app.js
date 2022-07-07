@@ -17,6 +17,7 @@ var mutationRouter = require("./routes/mutation.router");
 var inboxRouter = require("./routes/inbox.router");
 var singleTransferRouter = require("./routes/single_transfer.router");
 var requestRouter = require("./routes/requests.router");
+var historyPaymentRouter = require("./routes/historyPayment.router.js");
 
 var app = express();
 
@@ -51,6 +52,7 @@ app.use("/mutation", mutationRouter);
 app.use("/inbox", inboxRouter);
 app.use("/single-transfer", singleTransferRouter);
 app.use("/request", requestRouter);
+app.use("/history-payment", historyPaymentRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

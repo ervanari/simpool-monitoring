@@ -15,16 +15,12 @@ router.get("/", async function (req, res, next) {
     const getMutation = await request.get("mutation?limit=0&offset=0", token);
 
 
-    const mutate = getMutation.data.data;
-    let mutasi = mutate.reverse();
+    let mutate = getMutation.data.data;
+    // let mutasi = mutate.reverse();
     let dataAllMutations = [];
 
-    // mutasi.sort(function (a, b) {
-    //   return b - a;
-    // });
-
-    for (let i in mutasi) {
-      let datetime = mutasi[i].createdAt;
+    for (let i in mutate) {
+      let datetime = mutate[i].createdAt;
       let mutdate = new Date(datetime);
       const asiaDate = mutdate.toLocaleString("id", {
         weekday: "short",
@@ -40,8 +36,8 @@ router.get("/", async function (req, res, next) {
 
       dataAllMutations.push({
         createdAt: asiaDate,
-        balance: mutasi[i].balance,
-        number: mutasi[i].number,
+        balance: mutate[i].balance,
+        number: mutate[i].number,
       });
     }
 
