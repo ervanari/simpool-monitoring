@@ -49,30 +49,6 @@ const Loginpost = async (path, token, params = null) => {
   });
 };
 
-const actget = async (path, token, params = null) => {
-  return await axios({
-    url: "http://116.0.1.72:3003/" + path,
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json;charset=UTF-8",
-      origin: "http://localhost:3002",
-    },
-    data: params,
-  });
-};
-
-const actpost = async (path, token, params = null) => {
-  return await axios({
-    url: "http://116.0.1.72:3003/" + path,
-    method: "post",
-    headers: {
-      "Content-Type": "application/json;charset=UTF-8",
-      origin: "http://localhost:3002",
-    },
-    data: params,
-  });
-};
-
 const postmutation = async (path, token, params = null) => {
   return await axios({
     url: process.env.API_URL + path,
@@ -84,4 +60,4 @@ const postmutation = async (path, token, params = null) => {
   });
 };
 
-module.exports = { get, post, Loginpost, put, actget, actpost, postmutation };
+module.exports = { get, post, Loginpost, put, postmutation };
